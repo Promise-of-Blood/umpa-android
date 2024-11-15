@@ -1,6 +1,4 @@
-package com.pob.umpa
-
-import androidx.compose.ui.graphics.vector.ImageVector
+package com.pob.umpa.ui.view.main
 
 data class MainNavItem (
     val name : String,
