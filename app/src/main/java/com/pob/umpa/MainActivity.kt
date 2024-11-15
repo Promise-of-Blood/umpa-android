@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     icon = R.drawable.baseline_home_24
                 ),
                 MainNavItem(
-                    name = "매칭 서비스",
+                    name = "매칭서비스",
                     route = "contact",
                     icon = R.drawable.baseline_matching_24
                 ),
@@ -71,14 +72,18 @@ class MainActivity : ComponentActivity() {
                                 BottomNavigationItem(
                                     selected = item.route == backStackEntry.value?.destination?.route,
                                     onClick = { navController.navigate(item.route) },
-                                    label = { Text(item.name) },
+                                    label = { Text(text = item.name, fontSize = 12.sp) },
                                     icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
                                 )
                             }
                         }
                     }
                 ) { innerPadding ->
-                    Navigation(navController = navController, modifier = Modifier.padding(innerPadding))
+                    Navigation(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding),
+
+                    )
                 }
             }
         }
@@ -94,27 +99,30 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Navigation(navController : NavHostController, modifier: Modifier) {
+fun Navigation(
+    navController : NavHostController,
+    modifier: Modifier,
+) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             // 홈 부분 스크린
-            Greeting(name = "Home")
+            Greeting(name = "홈")
         }
         composable("contact") {
             // 매칭 서비스 부분 스크린
-            Greeting(name = "Contact")
+            Greeting(name = "매칭 서비스")
         }
         composable("community") {
             // 커뮤니티 부분 스크린
-            Greeting(name = "Community")
+            Greeting(name = "커뮤니티")
         }
         composable("chatting") {
             // 채팅 부분 스크린
-            Greeting(name = "Chatting")
+            Greeting(name = "채팅")
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
-            Greeting(name = "myinfo")
+            Greeting(name = "내 정보")
         }
     }
 }
