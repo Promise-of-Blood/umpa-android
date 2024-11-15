@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -14,7 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +63,7 @@ class MainActivity : ComponentActivity() {
             )
             UmpaTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().safeDrawingPadding(),
                     bottomBar = {
                         val backStackEntry = navController.currentBackStackEntryAsState()
                         BottomNavigation (
@@ -72,7 +75,7 @@ class MainActivity : ComponentActivity() {
                                 BottomNavigationItem(
                                     selected = item.route == backStackEntry.value?.destination?.route,
                                     onClick = { navController.navigate(item.route) },
-                                    label = { Text(text = item.name, fontSize = 12.sp) },
+                                    label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
                                     icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
                                 )
                             }
