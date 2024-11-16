@@ -19,3 +19,5 @@ val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val Grey = Color(0xFF9E9E9E)
 val LightGray = Color(0xFFEBEBEB)
+// Middle Grey, naming by 김윤재
+val MiddleGrey = Color(0xFFC2C2C2)

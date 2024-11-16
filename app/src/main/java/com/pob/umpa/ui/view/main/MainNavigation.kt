@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.pob.umpa.ui.view.main.home.HomeScreen
 
 @Composable
 fun MainNavigation(
@@ -14,7 +15,7 @@ fun MainNavigation(
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             // 홈 부분 스크린
-            Greeting(name = "홈")
+            HomeScreen(modifier)
         }
         composable("contact") {
             // 매칭 서비스 부분 스크린
@@ -34,5 +35,3 @@ fun MainNavigation(
         }
     }
 }
-
-// 깃허브 테스트용 주석

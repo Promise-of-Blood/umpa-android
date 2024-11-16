@@ -5,16 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.pob.umpa.ui.theme.MiddleGrey
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
@@ -33,10 +37,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             UmpaTheme {
+                val backStackEntry = navController.currentBackStackEntryAsState()
                 Scaffold(
-                    modifier = Modifier.fillMaxSize().safeDrawingPadding(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .safeDrawingPadding(),
+                    topBar = {
+                        MainItemList.forEach { item ->
+                            if(item.route == backStackEntry.value?.destination?.route) {
+                                TopAppBar(
+                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 16.dp)) },
+                                    backgroundColor = Color.White,
+                                    contentColor = Color.Black,
+                                    modifier = Modifier.height(60.dp)
+                                )
+                            }
+                        }
+                    },
                     bottomBar = {
-                        val backStackEntry = navController.currentBackStackEntryAsState()
                         BottomNavigation (
                             backgroundColor = Color.White,
                             contentColor = Color.Black,
@@ -48,6 +66,8 @@ class MainActivity : ComponentActivity() {
                                     onClick = { navController.navigate(item.route) },
                                     label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
                                     icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
+                                    selectedContentColor = Black,
+                                    unselectedContentColor = MiddleGrey
                                 )
                             }
                         }
@@ -55,7 +75,12 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     MainNavigation(
                         navController = navController,
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(
+                                horizontal = 32.dp,
+                                vertical = 12.dp
+                            ),
                     )
                 }
             }
