@@ -19,7 +19,7 @@ fun MainNavigation(
         }
         composable("contact") {
             // 매칭 서비스 부분 스크린
-            Greeting(name = "매칭 서비스")
+            Greeting(name = "레슨")
         }
         composable("community") {
             // 커뮤니티 부분 스크린
