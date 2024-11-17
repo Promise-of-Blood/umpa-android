@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.lesson
+package com.pob.umpa.ui.view.main.matching
 
 val lessonTypeList = listOf("레슨", "반주자", "악보제작")
 

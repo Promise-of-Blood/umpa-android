@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pob.umpa.ui.view.main.home.HomeScreen
-import com.pob.umpa.ui.view.main.lesson.LessonScreen
+import com.pob.umpa.ui.view.main.matching.MatchingScreen
 
 @Composable
 fun MainNavigation(
@@ -20,7 +20,7 @@ fun MainNavigation(
         }
         composable("contact") {
             // 매칭 서비스 부분 스크린
-            LessonScreen(modifier)
+            MatchingScreen(modifier)
         }
         composable("community") {
             // 커뮤니티 부분 스크린
