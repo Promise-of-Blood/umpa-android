@@ -46,8 +46,9 @@ class MainActivity : ComponentActivity() {
                         MainItemList.forEach { item ->
                             if(item.route == backStackEntry.value?.destination?.route) {
                                 TopAppBar(
-                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 16.dp)) },
+                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Bold, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 16.dp)) },
                                     backgroundColor = Color.White,
+                                    elevation = 0.dp,
                                     contentColor = Color.Black,
                                     modifier = Modifier.height(60.dp)
                                 )
