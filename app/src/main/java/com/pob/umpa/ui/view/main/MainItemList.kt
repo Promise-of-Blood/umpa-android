@@ -4,7 +4,7 @@ import com.pob.umpa.R
 
 val MainItemList = listOf(
     MainNavItem(
-        name = "홈",
+        name = "Umpa",
         route = "home",
         icon = R.drawable.baseline_home_24
     ),
