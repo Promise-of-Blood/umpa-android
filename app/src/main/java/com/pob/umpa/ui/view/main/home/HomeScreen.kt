@@ -52,7 +52,7 @@ fun HomeScreen(modifier: Modifier,) {
 @Composable
 fun HomeItemTitle(modifier: Modifier, title: String) {
     Text(
-        modifier = modifier,
+        modifier = modifier.padding(start = 8.dp),
         text = title,
         fontFamily = pretendardFontFamily,
         fontWeight = FontWeight.Black,
@@ -103,6 +103,11 @@ fun HomeFindTeacherItem(item : TeacherSubject) {
         }
         Text(text = item.name, modifier = Modifier.widthIn(min = 10.dp, max = 60.dp), fontSize = 12.sp)
     }
+}
+
+@Composable
+fun HomeBanner() {
+
 }
 
 @Composable
