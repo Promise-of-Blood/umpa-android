@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.pob.umpa.ui.view.main.community.CommunityScreen
 import com.pob.umpa.ui.view.main.home.HomeScreen
 
 @Composable
@@ -23,7 +24,7 @@ fun MainNavigation(
         }
         composable("community") {
             // 커뮤니티 부분 스크린
-            Greeting(name = "커뮤니티")
+            CommunityScreen(modifier)
         }
         composable("chatting") {
             // 채팅 부분 스크린
