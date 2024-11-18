@@ -32,7 +32,7 @@ fun MainNavigation(
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
-            Greeting(name = "내 정보")
+            MyPageScreen()
         }
     }
 }
