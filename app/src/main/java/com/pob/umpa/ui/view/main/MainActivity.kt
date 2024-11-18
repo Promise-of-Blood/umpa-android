@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -77,11 +78,12 @@ class MainActivity : ComponentActivity() {
                     MainNavigation(
                         navController = navController,
                         modifier = Modifier
+                            .background(UmpaColor.White)
                             .padding(innerPadding)
                             .padding(
                                 horizontal = 24.dp,
                                 vertical = 12.dp
-                            ),
+                            )
                     )
                 }
             }
