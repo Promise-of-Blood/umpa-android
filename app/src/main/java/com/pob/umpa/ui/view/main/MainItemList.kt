@@ -4,12 +4,12 @@ import com.pob.umpa.R
 
 val MainItemList = listOf(
     MainNavItem(
-        name = "홈",
+        name = "Umpa",
         route = "home",
         icon = R.drawable.baseline_home_24
     ),
     MainNavItem(
-        name = "매칭서비스",
+        name = "매칭",
         route = "contact",
         icon = R.drawable.baseline_matching_24
     ),

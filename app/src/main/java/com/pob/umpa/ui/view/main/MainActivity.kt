@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.pob.umpa.ui.theme.MiddleGrey
+import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
@@ -46,11 +46,11 @@ class MainActivity : ComponentActivity() {
                         MainItemList.forEach { item ->
                             if(item.route == backStackEntry.value?.destination?.route) {
                                 TopAppBar(
-                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Bold, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 16.dp)) },
+                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
                                     backgroundColor = Color.White,
-                                    elevation = 0.dp,
                                     contentColor = Color.Black,
-                                    modifier = Modifier.height(60.dp)
+                                    modifier = Modifier.height(60.dp),
+                                    elevation = 0.dp
                                 )
                             }
                         }
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         BottomNavigation (
                             backgroundColor = Color.White,
                             contentColor = Color.Black,
-                            elevation = 5.dp,
+                            elevation = 10.dp,
                         ) {
                             MainItemList.forEach { item ->
                                 BottomNavigationItem(
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                                     label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
                                     icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
                                     selectedContentColor = Black,
-                                    unselectedContentColor = MiddleGrey
+                                    unselectedContentColor = UmpaColor.MiddleGrey
                                 )
                             }
                         }
@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .padding(innerPadding)
                             .padding(
-                                horizontal = 32.dp,
+                                horizontal = 24.dp,
                                 vertical = 12.dp
                             ),
                     )

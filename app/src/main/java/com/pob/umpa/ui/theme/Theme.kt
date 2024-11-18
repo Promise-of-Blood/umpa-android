@@ -15,15 +15,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Main,
-    secondary = Secondary,
-    tertiary = Terri
+    primary = UmpaColor.Main,
+    secondary = UmpaColor.Secondary,
+    tertiary = UmpaColor.Terri
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Main,
-    secondary = Secondary,
-    tertiary = Terri
+    primary = UmpaColor.Main,
+    secondary = UmpaColor.Secondary,
+    tertiary = UmpaColor.Terri
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -63,7 +63,7 @@ fun UmpaTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = White.toArgb()
+            window.statusBarColor = UmpaColor.White.toArgb()
         }
     }
 }
