@@ -40,7 +40,7 @@ fun AcceptReview() {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
                 Row(
