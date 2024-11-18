@@ -42,10 +42,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
-import com.pob.umpa.ui.theme.Grey
-import com.pob.umpa.ui.theme.Main
-import com.pob.umpa.ui.theme.Secondary
-import com.pob.umpa.ui.theme.White
+import com.pob.umpa.ui.theme.UmpaColor.Companion.Grey
+import com.pob.umpa.ui.theme.UmpaColor.Companion.Main
+import com.pob.umpa.ui.theme.UmpaColor.Companion.Secondary
+import com.pob.umpa.ui.theme.UmpaColor.Companion.White
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
 @Composable

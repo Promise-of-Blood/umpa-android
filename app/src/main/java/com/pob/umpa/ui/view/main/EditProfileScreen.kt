@@ -53,10 +53,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.pob.umpa.ui.theme.Grey
-import com.pob.umpa.ui.theme.White
+import com.pob.umpa.ui.theme.UmpaColor.Companion.Grey
+import com.pob.umpa.ui.theme.UmpaColor.Companion.Main
+import com.pob.umpa.ui.theme.UmpaColor.Companion.White
 import com.pob.umpa.ui.theme.pretendardFontFamily
-import com.pob.umpa.ui.theme.Main as Main
 
 val subjectList = listOf("보컬", "피아노", "작곡", "기타", "드럼", "베이스", "관악", "전자 음악", "화성학")
 val locationList = listOf("서울/대전/대구/부산/광주/경기도")
