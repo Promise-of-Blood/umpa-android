@@ -22,4 +22,9 @@ val TeacherSubjectList = listOf<TeacherSubject>(
     TeacherSubject("harmony", "화성학", R.drawable.find_teacher_harmony),
     TeacherSubject("accompanist", "반주자", R.drawable.find_teacher_accompanist),
 
+    TeacherSubject("mrproducing", "MR 제작", R.drawable.find_teacher_harmony),
+    TeacherSubject("scoreproducing", "악보 제작", R.drawable.find_teacher_accompanist),
+
 )
+
+val EmptyTeacherSubject = TeacherSubject("empty", "", 0)

@@ -1,7 +1,11 @@
 package com.pob.umpa.ui.view.main.home
 
+import android.graphics.Paint.Align
+import android.util.Log
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,35 +21,68 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(modifier: Modifier,) {
     Box (
-        modifier = Modifier.fillMaxSize().background(Color.White)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
     ) {
-        Column(
-            modifier = modifier.fillMaxWidth(),
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceAround
         ) {
-            HomeItemTitle(modifier = Modifier, title = "선생님 찾기")
-            HomeFindTeacher(modifier = Modifier)
+            item {
+                HomeItemTitle(modifier = Modifier, title = "선생님 찾기")
+                HomeFindTeacher(modifier = Modifier)
+                Spacer(modifier = Modifier.padding(16.dp))
+                HomeBanner()
+                Spacer(modifier = Modifier.padding(16.dp))
+                HomeItemTitle(modifier = Modifier, title = "음파 커뮤니티")
+                Spacer(modifier = Modifier.padding(6.dp))
+                HomeCommunityShortcut(modifier)
+                Spacer(modifier = Modifier.padding(16.dp))
+                HomeItemTitle(modifier = Modifier, title = "입시 캘린더")
+                Spacer(modifier = Modifier.padding(6.dp))
+                HomeCalendar()
+                Spacer(modifier = Modifier.padding(16.dp))
+            }
         }
+
     }
 }
 
@@ -62,15 +99,22 @@ fun HomeItemTitle(modifier: Modifier, title: String) {
 
 @Composable
 fun HomeFindTeacher(modifier: Modifier) {
-    Column(modifier = modifier) {
-        for(i in 0..< TeacherSubjectList.size / 5) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                for(j in 0..4) {
-                    HomeFindTeacherItem(item = TeacherSubjectList[i * 5 + j])
+    val pagerState = rememberPagerState(pageCount = {2})
+    HorizontalPager(state = pagerState) { page ->
+        Column(modifier = modifier) {
+            for(i in 0..< 2) {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    for(j in 0..4) {
+                        HomeFindTeacherItem(
+                            item =
+                            if (TeacherSubjectList.size > (i * 5 + j) + page * 10) TeacherSubjectList[(i * 5 + j) + page * 10]
+                            else EmptyTeacherSubject
+                        )
+                    }
                 }
             }
         }
@@ -79,49 +123,211 @@ fun HomeFindTeacher(modifier: Modifier) {
 
 @Composable
 fun HomeFindTeacherItem(item : TeacherSubject) {
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(vertical = 10.dp)
-    ) {
-        Card(
-            modifier = Modifier.size(50.dp).padding(vertical = 2.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = CardColors(UmpaColor.LightBlue, UmpaColor.LightBlue, UmpaColor.LightBlue, UmpaColor.LightBlue)
+    if(item.type == "empty") {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 10.dp)
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+            Spacer(modifier = Modifier.size(50.dp))
+            Text(text = item.name, modifier = Modifier.widthIn(min = 10.dp, max = 60.dp), fontSize = 12.sp)
+        }
+    }
+    else {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 10.dp)
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(vertical = 2.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = CardColors(UmpaColor.LightBlue, UmpaColor.LightBlue, UmpaColor.LightBlue, UmpaColor.LightBlue)
             ) {
-                Image(
-                    modifier = Modifier.size(30.dp),
-                    painter = painterResource(id = item.image),
-                    contentDescription = item.name,
-                    contentScale = ContentScale.Fit,
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        modifier = Modifier.size(30.dp),
+                        painter = painterResource(id = item.image),
+                        contentDescription = item.name,
+                        contentScale = ContentScale.Fit,
+                    )
+                }
+            }
+            Text(text = item.name, modifier = Modifier.widthIn(min = 10.dp, max = 60.dp), fontSize = 12.sp)
+        }
+    }
+}
+
+val bannerList = listOf(
+    R.drawable.banner_t1,
+    R.drawable.banner_arcane,
+    R.drawable.banner_flip6
+)
+
+// 배너
+
+@Composable
+fun HomeBanner() {
+    val pagerState = rememberPagerState (pageCount = {
+        3
+    })
+    LaunchedEffect(key1 = Unit) {
+        while(true) {
+            for(i in 0..2) {
+                delay(5000)
+                pagerState.animateScrollToPage(i)
             }
         }
-        Text(text = item.name, modifier = Modifier.widthIn(min = 10.dp, max = 60.dp), fontSize = 12.sp)
+    }
+    Box {
+        HorizontalPager(state = pagerState) { page ->
+            HomeBannerItem(imgId = bannerList[page])
+        }
+        HomeBannerPage(
+            text = (pagerState.currentPage + 1).toString(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 12.dp, bottom = 6.dp)
+        )
     }
 }
 
 @Composable
-fun HomeBanner() {
-
+fun HomeBannerItem(imgId : Int) {
+    Image(
+        painter = painterResource(id = imgId),
+        contentDescription = "배너",
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .clip(RoundedCornerShape(16.dp))
+    )
 }
 
 @Composable
-fun HomeCommunityShortcut() {
-
+fun HomeBannerPage(modifier: Modifier, text: String) {
+    Box(modifier = modifier
+        .width(60.dp)
+        .height(25.dp)
+        .background(color = UmpaColor.Opacity50Black, shape = RoundedCornerShape(10.dp)),
+        contentAlignment = Alignment.Center
+    )  {
+        Text(
+            "$text/3", color = UmpaColor.White,
+        )
+    }
 }
 
+@Composable
+fun HomeCommunityShortcut(modifier: Modifier) {
+    Row (
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(
+                horizontal = 12.dp
+            )
+            .fillMaxWidth()
+    ) {
+        CommunityShortcutItemList.forEach {
+            HomeCommunityShortcutItem(it)
+        }
+    }
+}
+
+@Composable
+fun HomeCommunityShortcutItem(item: CommunityShortcutItem) {
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(painter = painterResource(id = item.image), contentDescription = item.name, modifier = Modifier.size(40.dp))
+        Text(text = item.name, textAlign = TextAlign.Center, fontSize = 12.sp)
+    }
+}
+
+//
 @Composable
 fun HomeCalendar() {
+    Log.d("달력 날짜 표시", "${getNowMonth()}, ${getFirstDay()}, ${getLastDay()}")
+    // 30 * 6 (박스) + 2 * 5 (선) + 10(패딩)
+    Box (
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(10.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .border(2.dp, UmpaColor.LightGray, shape = RoundedCornerShape(10.dp))
+            .background(UmpaColor.LightGray),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyVerticalGrid(columns = GridCells.Fixed(7), verticalArrangement = Arrangement.Center) {
+            // 맨 위 7개 고정
+            // 첫 날짜 요일 값만큼 빈 거 추가 후,
+            // 1~마지막 날짜 까지 한 후,
+            // 마지막 날짜 요일 구해서, 7 - 1 - 값 을 빈 거 추가
+            items(7) {
+                Box (
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(1.dp)
+                        .background(UmpaColor.White),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = WeekKorean[it],
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        fontFamily = pretendardFontFamily,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
 
+            items(getFirstDay()) {
+                Spacer(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(1.dp)
+                        .background(UmpaColor.White)
+                )
+            }
+
+            items(getNumOfDays()) {
+                Box (
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(1.dp)
+                        .background(UmpaColor.White),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${it + 1}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 11.sp
+                    )
+                }
+            }
+
+            items (7 - 1 - getLastDay()) {
+                Spacer(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(1.dp)
+                        .background(UmpaColor.White)
+                )
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeFindTeacher(modifier = Modifier)
+    HomeBanner()
 }
