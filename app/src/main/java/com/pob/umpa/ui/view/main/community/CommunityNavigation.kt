@@ -17,10 +17,10 @@ fun CommunityNavigation(
             AcceptReview()
         }
         composable("information_sharing") {
-            Greeting(name = "정보 공유")
+            InformationSharingScreen()
         }
         composable("questions") {
-            Greeting(name = "질문")
+            QuestionsScreen()
         }
         composable("mentoring") {
             Greeting(name = "멘토링")
