@@ -1,6 +1,5 @@
 package com.pob.umpa.ui.view.main.community
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -58,6 +58,8 @@ fun QuestionsScreen() {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(vertical = 16.dp)
             ) {
+                item { QuestionUpload() }
+                item { Divider(modifier = Modifier.height(1.dp))}
                 items(30) {
                     QuestionBox()
                 }
@@ -68,12 +70,100 @@ fun QuestionsScreen() {
 
 @Composable
 fun QuestionUpload() {
-    TODO("Not yet implemented")
+    var isAnonymous by remember { mutableStateOf(false) } // 상태를 부모에서 관리
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                color = UmpaColor.White,
+            )
+            .padding(vertical = 8.dp)
+    ) {
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+                    ){
+                ProfileImage()
+                Spacer(modifier = Modifier.width(8.dp))
+                QuestionUploadInfo("오리너구리9", "질문을 입력해주세요")
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(60.dp)
+                        .height(35.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(color = UmpaColor.Main),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "등록",
+                        style = Typography.bodySmall,
+                        color = UmpaColor.White
+                    )
+                }
+            }
+
+        }
+    }
+
 }
 
 @Composable
+fun QuestionUploadInfo(user: String, question: String) {
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .height((50.dp))
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row {
+                Text(
+                    text = user,
+                    style = Typography.bodySmall,
+                    color = UmpaColor.Black
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "학생",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(UmpaColor.Terri)
+                        .padding(horizontal = 4.dp, vertical = 2.dp), // 내부 패딩 추가
+                    style = Typography.bodySmall,
+                    color = UmpaColor.White
+                )
+            }
+            Row {
+                Text(
+                    text = "익명",
+                    style = Typography.bodySmall
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                CustomCheckbox(checked = false, onCheckedChange = {} )
+            }
+        }
+        AnswerField(question)
+    }
+}
+
+
+@Composable
 fun QuestionBox() {
-    var isAnonymous by remember { mutableStateOf(false) } // 상태를 부모에서 관리
+    var isAnonymous by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +181,7 @@ fun QuestionBox() {
             Row {
                 ProfileImage()
                 Spacer(modifier = Modifier.width(8.dp))
-                QuestionInfo()
+                QuestionInfo("익명의 질문자", 1, "하루에 연습 몇시간씩 하시나요?")
             }
             Row(
                 modifier = Modifier
@@ -115,6 +205,7 @@ fun QuestionBox() {
                 Row(
                     modifier = Modifier
                         .weight(8.5f)
+                        .fillMaxHeight()
                         .clip(RoundedCornerShape(8.dp))
                         .background(color = UmpaColor.LightGray)
                         .padding(vertical = 4.dp, horizontal = 8.dp),
@@ -125,7 +216,7 @@ fun QuestionBox() {
                         onCheckedChange = { isAnonymous = it }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    AnswerField()
+                    AnswerField("답변을 입력해주세요.")
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Box(
@@ -202,23 +293,21 @@ fun CustomCheckbox(
 
 
 @Composable
-fun AnswerField() {
+fun AnswerField(hintText: String) {
     var text by remember { mutableStateOf("") }
     BasicTextField(
         value = text,
         onValueChange = { newText -> text = newText },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .fillMaxWidth(),
         decorationBox = { innerTextField ->
             Box(
                 Modifier
-                    .padding(horizontal = 4.dp, vertical = 4.dp)
                     .fillMaxWidth()
             ) {
                 if (text.isEmpty()) {
                     Text(
-                        text = "답변을 입력해주세요.",
+                        text = hintText,
                         style = Typography.bodySmall,
                         color = UmpaColor.Grey
                     )
@@ -247,7 +336,7 @@ fun ProfileImage() {
 }
 
 @Composable
-fun QuestionInfo() {
+fun QuestionInfo(user: String, uploadDate: Int, question: String) {
     Column(
         modifier = Modifier
             .height(50.dp)
@@ -256,7 +345,7 @@ fun QuestionInfo() {
     ) {
         Row {
             Text(
-                text = "익명의 질문자",
+                text = user,
                 style = Typography.bodySmall
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -266,12 +355,12 @@ fun QuestionInfo() {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "1일전",
+                text = "$uploadDate 일전",
                 style = Typography.bodySmall
             )
         }
         Text(
-            text = "하루에 연습 몇시간 씩 하시나요?",
+            text = question,
             style = Typography.bodyLarge
         )
     }
