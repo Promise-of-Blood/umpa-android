@@ -1,6 +1,5 @@
 package com.pob.umpa.ui.view.main.community
 
-import android.widget.Spinner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
+import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
@@ -63,7 +63,7 @@ fun AcceptReview() {
                     )
                 }
             }
-            items(100) {
+            items(30) {
                 Review()
             }
         }
@@ -154,22 +154,14 @@ fun Review() {
         // 게시글 제목
         Text(
             text = "서울예대 최종 합격 후기",
-            style = TextStyle(
-                fontFamily = pretendardFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            ),
+            style = Typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         // 게시글 내용
         Text(
             text = "드디어!! 입시끝났다!!!!!! 칼바람 딱대!!!!!!!!!!!!!!!!!",
-            style = TextStyle(
-                fontFamily = pretendardFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            ),
+            style = Typography.bodySmall,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -189,7 +181,7 @@ fun Review() {
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "123", style = MaterialTheme.typography.bodySmall)
+                Text(text = "123", style = Typography.bodySmall)
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -200,12 +192,12 @@ fun Review() {
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "45", style = MaterialTheme.typography.bodySmall)
+                Text(text = "45", style = Typography.bodySmall)
             }
 
             Text(
                 text = "4 분전",
-                style = MaterialTheme.typography.bodySmall,
+                style = Typography.bodySmall,
                 color = UmpaColor.Grey
             )
         }
