@@ -26,8 +26,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -156,6 +158,9 @@ fun MatchingList(modifier: Modifier = Modifier) {
             MockLessonData.mockLessonData
         ) { index, item ->
             MatchingItem(matchingData = item)
+            if (index < MockLessonData.mockLessonData.size - 1) {
+                HorizontalDivider(thickness = 1.dp, color = UmpaColor.LightGray)
+            }
         }
     }
 
