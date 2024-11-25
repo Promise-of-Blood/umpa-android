@@ -2,7 +2,6 @@ package com.pob.umpa.ui.view.main.matching.detail
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -15,9 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,39 +30,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.domain.SocialLink
-import com.pob.umpa.domain.Teacher
+import com.pob.umpa.domain.TeacherDetail
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 
 @Composable
 fun TeacherInformationScreen(
-    teacher: Teacher, modifier: Modifier = Modifier
+    teacherDetail: TeacherDetail, modifier: Modifier = Modifier
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp), modifier = modifier.fillMaxSize()
     ) {
         Text(
-            text = teacher.summary, style = Typography.bodyLarge, lineHeight = 24.sp
+            text = teacherDetail.summary, style = Typography.bodyLarge, lineHeight = 24.sp
         )
 
         Column(
-            verticalArrangement = spacedBy(20.dp), modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = UmpaColor.LightGray,
-                    shape = RoundedCornerShape(8.dp),
-                )
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 24.dp,
-                )
+            verticalArrangement = spacedBy(20.dp),
+            modifier = Modifier
+                .lightGrayBorder()
+                .cardPadding()
         ) {
-            TeacherProfile(teacher)
+            TeacherProfile(teacherDetail)
 
-            ExperienceList(teacher.experiences)
+            ExperienceList(teacherDetail.experienceList)
 
             Text(
-                text = teacher.introduce,
+                text = teacherDetail.introduction,
                 style = Typography.bodySmall,
                 lineHeight = 28.sp,
                 color = UmpaColor.Black
@@ -75,11 +67,11 @@ fun TeacherInformationScreen(
 
 @Composable
 fun TeacherProfile(
-    teacher: Teacher, modifier: Modifier = Modifier
+    teacherDetail: TeacherDetail, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.height(IntrinsicSize.Max)) {
         Image(
-            painter = painterResource(teacher.profileImage),
+            painter = painterResource(teacherDetail.profileImage),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -92,15 +84,13 @@ fun TeacherProfile(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .padding(
-                    horizontal = 12.dp
-                )
+                .padding(horizontal = 12.dp)
         ) {
             Text(
-                text = "${teacher.name} 선생님", style = Typography.bodyLarge
+                text = "${teacherDetail.name} 선생님", style = Typography.bodyLarge
             )
 
-            SocialLinkList(teacher.socialLinks)
+            SocialLinkList(teacherDetail.socialLinkList)
         }
     }
 }
@@ -141,7 +131,7 @@ fun ExperienceList(experienceList: List<String>, modifier: Modifier = Modifier) 
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Circle,
+                    imageVector = Icons.Filled.CheckCircle,
                     tint = UmpaColor.Terri,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp)

@@ -103,7 +103,7 @@ fun MatchingDetailScreen(
         },
         content = {
             when (selectedTabIndex) {
-                0 -> teacherInformationScreen(lessonDetail.teacherDetail)
+                0 -> TeacherInformationScreen(lessonDetail.teacherDetail)
                 1 -> LessonInformationScreen(lessonDetail.lessonDetail)
                 2 -> CurriculumScreen(lessonDetail.curriculumList)
                 3 -> ReviewScreen(
