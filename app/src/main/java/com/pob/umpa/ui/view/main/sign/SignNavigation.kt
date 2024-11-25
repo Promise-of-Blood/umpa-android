@@ -12,5 +12,7 @@ fun SignNavigation() {
     NavHost(navController = navController, startDestination = "sign_in") {
         composable("sign_in") { SignInScreen(navController) }
         composable("user_type") { UserTypeSelectionScreen(navController)}
+        composable("set_name") { SetNameScreen(navController)}
+        composable("set_major") { SetMajorScreen(navController)}
     }
 }

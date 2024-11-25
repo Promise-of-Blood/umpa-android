@@ -167,7 +167,7 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = {},
+                onClick = {navController.navigate("set_name")},
                 shape = RoundedCornerShape(3.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = UmpaColor.Main,
