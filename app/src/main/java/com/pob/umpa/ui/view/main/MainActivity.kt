@@ -38,25 +38,37 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             UmpaTheme {
                 val backStackEntry = navController.currentBackStackEntryAsState()
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding(),
-                    topBar = {
-                        MainItemList.forEach { item ->
-                            if(item.route == backStackEntry.value?.destination?.route) {
-                                TopAppBar(
-                                    title = { Text(text = item.name, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
-                                    backgroundColor = Color.White,
-                                    contentColor = Color.Black,
-                                    modifier = Modifier.height(60.dp),
-                                    elevation = 0.dp
-                                )
-                            }
+                var isBottomBarVisible = false
+
+                backStackEntry.value?.destination?.route?.let { route ->
+                    isBottomBarVisible = MainItemList.any { it.route == route }
+                }
+
+                Scaffold(modifier = Modifier
+                    .fillMaxSize()
+                    .safeDrawingPadding(), topBar = {
+                    MainItemList.forEach { item ->
+                        if (item.route == backStackEntry.value?.destination?.route) {
+                            TopAppBar(
+                                title = {
+                                    Text(
+                                        text = item.name,
+                                        fontFamily = pretendardFontFamily,
+                                        fontWeight = FontWeight.Black,
+                                        fontSize = 24.sp,
+                                        modifier = Modifier.padding(horizontal = 12.dp)
+                                    )
+                                },
+                                backgroundColor = Color.White,
+                                contentColor = Color.Black,
+                                modifier = Modifier.height(60.dp),
+                                elevation = 0.dp
+                            )
                         }
-                    },
-                    bottomBar = {
-                        BottomNavigation (
+                    }
+                }, bottomBar = {
+                    if (isBottomBarVisible) {
+                        BottomNavigation(
                             backgroundColor = Color.White,
                             contentColor = Color.Black,
                             elevation = 10.dp,
@@ -65,22 +77,31 @@ class MainActivity : ComponentActivity() {
                                 BottomNavigationItem(
                                     selected = item.route == backStackEntry.value?.destination?.route,
                                     onClick = { navController.navigate(item.route) },
-                                    label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
-                                    icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
+                                    label = {
+                                        Text(
+                                            text = item.name,
+                                            style = TextStyle(fontSize = 12.sp)
+                                        )
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(id = item.icon),
+                                            contentDescription = item.name
+                                        )
+                                    },
                                     selectedContentColor = Black,
                                     unselectedContentColor = UmpaColor.MiddleGrey
                                 )
                             }
                         }
                     }
-                ) { innerPadding ->
+                }) { innerPadding ->
                     MainNavigation(
                         navController = navController,
                         modifier = Modifier
                             .padding(innerPadding)
                             .padding(
-                                horizontal = 24.dp,
-                                vertical = 12.dp
+                                horizontal = 24.dp, vertical = 12.dp
                             ),
                     )
                 }

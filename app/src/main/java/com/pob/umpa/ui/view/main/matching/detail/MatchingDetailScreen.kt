@@ -41,6 +41,7 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,27 +63,31 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.pob.umpa.R
-import com.pob.umpa.domain.LessonDetailModel
 import com.pob.umpa.domain.MatchingModel
+import com.pob.umpa.domain.MockLessonDetailData.mockLessonDetailData
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.util.toCommaString
 
 @Composable
 fun MatchingDetailScreen(
-    lessonDetail: LessonDetailModel, modifier: Modifier = Modifier
+    navController: NavController,
+    lessonId: String,
+    modifier: Modifier = Modifier,
 ) {
     val tabs = listOf("선생님 소개", "수업 소개", "커리큘럼", "리뷰")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     MatchingDetailLayout(
         topBar = {
-            MatchingDetailTopBar()
+            MatchingDetailTopBar(navController)
         },
         header = {
             MatchingDetailSummary(
-                lessonSummary = lessonDetail.lessonSummary,
+                lessonId = lessonId,
+                lessonSummary = mockLessonDetailData.lessonSummary,
                 modifier = Modifier.padding(24.dp),
             )
         },
@@ -103,12 +108,12 @@ fun MatchingDetailScreen(
         },
         content = {
             when (selectedTabIndex) {
-                0 -> TeacherInformationScreen(lessonDetail.teacherDetail)
-                1 -> LessonInformationScreen(lessonDetail.lessonDetail)
-                2 -> CurriculumScreen(lessonDetail.curriculumList)
+                0 -> TeacherInformationScreen(mockLessonDetailData.teacherDetail)
+                1 -> LessonInformationScreen(mockLessonDetailData.lessonDetail)
+                2 -> CurriculumScreen(mockLessonDetailData.curriculumList)
                 3 -> ReviewScreen(
-                    reviewList = lessonDetail.reviewList,
-                    successStoryList = lessonDetail.successStoryList
+                    reviewList = mockLessonDetailData.reviewList,
+                    successStoryList = mockLessonDetailData.successStoryList
                 )
             }
         },
@@ -200,9 +205,15 @@ fun MatchingDetailHeaderSection(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MatchingDetailTopBar(modifier: Modifier = Modifier) {
-    TopAppBar(title = {}, modifier = modifier.background(UmpaColor.White), navigationIcon = {
-        IconButton(onClick = {}) {
+fun MatchingDetailTopBar(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+) {
+    TopAppBar(title = {}, colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = Color.White,
+        navigationIconContentColor = UmpaColor.Black,
+    ), modifier = modifier, navigationIcon = {
+        IconButton(onClick = { navController.popBackStack() }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew, contentDescription = "뒤로가기"
             )
@@ -267,7 +278,7 @@ fun ChatButton(
 
 @Composable
 fun MatchingDetailSummary(
-    lessonSummary: MatchingModel, modifier: Modifier
+    lessonId: String, lessonSummary: MatchingModel, modifier: Modifier
 ) {
     MatchingDetailHeaderImage(
         modifier = Modifier
@@ -276,6 +287,7 @@ fun MatchingDetailSummary(
     )
 
     MatchingDetailHeaderText(
+        lessonId = lessonId,
         lesson = lessonSummary,
         modifier = modifier,
     )
@@ -295,11 +307,11 @@ fun MatchingDetailHeaderImage(
 
 @Composable
 fun MatchingDetailHeaderText(
-    lesson: MatchingModel, modifier: Modifier = Modifier
+    lessonId: String, lesson: MatchingModel, modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         Text(
-            text = lesson.title, style = Typography.titleMedium
+            text = lesson.title + lessonId, style = Typography.titleMedium
         )
 
         Spacer(modifier = Modifier.padding(2.dp))

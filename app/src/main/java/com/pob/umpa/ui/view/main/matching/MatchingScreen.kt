@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,16 +21,15 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.pob.umpa.R
 import com.pob.umpa.domain.MatchingModel
 import com.pob.umpa.domain.MockLessonData
@@ -55,7 +56,9 @@ import com.pob.umpa.ui.theme.pretendardFontFamily
 import com.pob.umpa.util.toCommaString
 
 @Composable
-fun MatchingScreen(modifier: Modifier = Modifier) {
+fun MatchingScreen(
+    navController: NavController, modifier: Modifier = Modifier
+) {
     Column(modifier = modifier) {
 
         MatchingOptions(
@@ -65,7 +68,7 @@ fun MatchingScreen(modifier: Modifier = Modifier) {
         )
 
         MatchingList(
-            modifier = Modifier
+            navController = navController, modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
         )
@@ -124,27 +127,21 @@ fun MatchingDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Strin
         }
     }
 
-    DropdownMenu(
-        modifier = Modifier.wrapContentSize(),
+    DropdownMenu(modifier = Modifier.wrapContentSize(),
         expanded = isDropDownMenuExpanded,
-        onDismissRequest = { isDropDownMenuExpanded = false }
-    ) {
+        onDismissRequest = { isDropDownMenuExpanded = false }) {
 
         dropMenuList.forEach { option ->
 
-            DropdownMenuItem(text = { Text(text = option, fontSize = 16.sp) },
-                onClick = {
-                    Toast.makeText(context, option, Toast.LENGTH_SHORT).show()
-                    isDropDownMenuExpanded = false
-                    selectedText = option
-                },
-                trailingIcon = {
-                    if (option == selectedText) Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = null
-                    )
-                }
-            )
+            DropdownMenuItem(text = { Text(text = option, fontSize = 16.sp) }, onClick = {
+                Toast.makeText(context, option, Toast.LENGTH_SHORT).show()
+                isDropDownMenuExpanded = false
+                selectedText = option
+            }, trailingIcon = {
+                if (option == selectedText) Icon(
+                    imageVector = Icons.Filled.Check, contentDescription = null
+                )
+            })
 
         }
     }
@@ -152,12 +149,13 @@ fun MatchingDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Strin
 
 
 @Composable
-fun MatchingList(modifier: Modifier = Modifier) {
+fun MatchingList(navController: NavController, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         itemsIndexed(
             MockLessonData.mockLessonData
         ) { index, item ->
-            MatchingItem(matchingData = item)
+            MatchingItem(matchingData = item,
+                modifier = Modifier.clickable { navController.navigate("contact/${item.lessonId}") })
             if (index < MockLessonData.mockLessonData.size - 1) {
                 HorizontalDivider(thickness = 1.dp, color = UmpaColor.LightGray)
             }
@@ -167,10 +165,10 @@ fun MatchingList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MatchingItem(matchingData: MatchingModel) {
+fun MatchingItem(matchingData: MatchingModel, modifier: Modifier = Modifier) {
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .height(120.dp)
             .background(Color.White)
             .fillMaxWidth()
@@ -226,8 +224,7 @@ fun MatchingItem(matchingData: MatchingModel) {
                 Spacer(modifier = Modifier.padding(3.dp))
 
                 Text(
-                    text = "·",
-                    style = Typography.bodySmall
+                    text = "·", style = Typography.bodySmall
                 )
 
                 Spacer(modifier = Modifier.padding(3.dp))
@@ -239,14 +236,15 @@ fun MatchingItem(matchingData: MatchingModel) {
 
             }
             Text(
-                text = matchingData.content, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                text = matchingData.content,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = Typography.bodySmall
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Text(
-                    text = "${matchingData.price.toCommaString()}원",
-                    style = Typography.bodyLarge
+                    text = "${matchingData.price.toCommaString()}원", style = Typography.bodyLarge
                 )
 
                 Spacer(modifier = Modifier.padding(1.dp))
@@ -274,5 +272,5 @@ fun MatchingItem(matchingData: MatchingModel) {
 @Preview(showBackground = true)
 @Composable
 fun MatchingScreenPreview() {
-    MatchingScreen(modifier = Modifier)
+    MatchingScreen(modifier = Modifier, navController = NavController(LocalContext.current))
 }
