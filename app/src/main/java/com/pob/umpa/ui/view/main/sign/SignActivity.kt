@@ -12,9 +12,8 @@ class SignActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
             UmpaTheme {
-                SignInScreen(navController)
+                SignNavigation()
             }
         }
     }

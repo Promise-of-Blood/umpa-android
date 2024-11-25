@@ -3,15 +3,14 @@ package com.pob.umpa.ui.view.main.sign
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,17 +32,22 @@ import com.pob.umpa.ui.theme.pretendardFontFamily
 
 @Composable
 fun SignInScreen(navController: NavHostController) {
-    Column {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         //Todo Logo
         //Todo SignIn
-        SignIn(modifier = Modifier.fillMaxSize())
+        SignIn(modifier = Modifier.fillMaxSize(), navController)
         //Todo find Id/password
         //Todo Social Login
     }
+
 }
 
 @Composable
-fun SignIn(modifier: Modifier) {
+fun SignIn(modifier: Modifier, navController: NavHostController) {
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,
@@ -53,12 +57,15 @@ fun SignIn(modifier: Modifier) {
         Image(
             painter = painterResource(id = R.drawable.kakao_login_large_wide),
             contentDescription = "카카오 로그인",
-            modifier = Modifier.size(340.dp, 60.dp)
+            modifier = Modifier
+                .size(340.dp, 60.dp)
+                .clickable { navController.navigate("user_type") }
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         LoginBtn(
+            navController = navController,
             signType = "네이버",
             btnColor = 0xFF03C75A,
             logo = R.drawable.btn_naver_icon_circle,
@@ -69,6 +76,7 @@ fun SignIn(modifier: Modifier) {
         Spacer(modifier = Modifier.height(12.dp))
 
         LoginBtn(
+            navController = navController,
             signType = "구글",
             btnColor = 0xFFFFFFFF,
             logo = R.drawable.android_light_rd_na3x,
@@ -80,6 +88,7 @@ fun SignIn(modifier: Modifier) {
 
 @Composable
 fun LoginBtn(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     signType: String,
     btnColor: Long,
@@ -95,9 +104,10 @@ fun LoginBtn(
             .clip(
                 RoundedCornerShape(8.dp)
             )
-            .background(color = Color(btnColor)),
+            .background(color = Color(btnColor))
+            .clickable { navController.navigate("user_type") },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
 
         Image(
