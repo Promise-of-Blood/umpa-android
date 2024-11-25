@@ -103,13 +103,13 @@ fun LoginBtn(
         Image(
             painter = painterResource(id = logo),
             contentDescription = "$signType 로그인 로고",
-            modifier = Modifier.weight(0.25f)
+            modifier = Modifier.weight(0.15f)
         )
 
 
         Text(
             text = "${signType}로 시작하기",
-            modifier = Modifier.weight(0.65f),
+            modifier = Modifier.weight(0.75f),
             fontFamily = pretendardFontFamily,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
