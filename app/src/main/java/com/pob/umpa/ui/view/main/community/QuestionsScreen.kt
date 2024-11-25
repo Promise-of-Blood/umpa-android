@@ -21,7 +21,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -43,6 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.R
+import com.pob.umpa.domain.MockCommentsData
+import com.pob.umpa.domain.QuestionCommentModel
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 
@@ -59,9 +63,9 @@ fun QuestionsScreen() {
                 contentPadding = PaddingValues(vertical = 16.dp)
             ) {
                 item { QuestionUpload() }
-                item { Divider(modifier = Modifier.height(1.dp))}
+                item { Divider(modifier = Modifier.height(1.dp)) }
                 items(30) {
-                    QuestionBox()
+                    QuestionBox(MockCommentsData.mockCommentsData)
                 }
             }
         }
@@ -82,7 +86,7 @@ fun QuestionUpload() {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-                    ){
+            ) {
                 ProfileImage()
                 Spacer(modifier = Modifier.width(8.dp))
                 QuestionUploadInfo("오리너구리9", "질문을 입력해주세요")
@@ -124,7 +128,7 @@ fun QuestionUploadInfo(user: String, question: String) {
             .fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -153,7 +157,7 @@ fun QuestionUploadInfo(user: String, question: String) {
                     style = Typography.bodySmall
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                CustomCheckbox(checked = false, onCheckedChange = {} )
+                CustomCheckbox(checked = false, onCheckedChange = {})
             }
         }
         AnswerField(question)
@@ -162,7 +166,7 @@ fun QuestionUploadInfo(user: String, question: String) {
 
 
 @Composable
-fun QuestionBox() {
+fun QuestionBox(comments: List<QuestionCommentModel>?) {
     var isAnonymous by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -196,6 +200,7 @@ fun QuestionBox() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "0", style = Typography.bodySmall)
             }
+            Comments(comments = comments)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -237,6 +242,113 @@ fun QuestionBox() {
             }
 
         }
+    }
+}
+
+@Composable
+fun Comments(comments: List<QuestionCommentModel>?) {
+    val isSingleComment = comments?.size == 1
+    var isExpanded by remember { mutableStateOf(false) }
+
+    if (comments.isNullOrEmpty()) {
+        return // 댓글이 없으면 아무것도 표시하지 않음
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+    ) {
+        if (isExpanded) {
+            // 전체 댓글 표시
+            comments.forEachIndexed { index, comment ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = UmpaColor.Main,
+                            shape = RoundedCornerShape(
+                                topStart = if (index == 0) 12.dp else 0.dp,
+                                topEnd = if (index == 0) 12.dp else 0.dp,
+                                bottomStart = if (index == comments.lastIndex) 12.dp else 0.dp,
+                                bottomEnd = if (index == comments.lastIndex) 12.dp else 0.dp
+                            )
+                        )
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RowComment(
+                        index = index,
+                        comment = comment,
+                    )
+                    // 댓글 더 보기 버튼
+                    if (!isSingleComment) {
+                        IconButton(
+                            onClick = { isExpanded = !isExpanded },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = "Expand Comments",
+                                tint = Color.Gray
+                            )
+                        }
+                    }
+                }
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = UmpaColor.Main,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RowComment(
+                    index = 0,
+                    comment = comments[0],
+                )
+                if (!isSingleComment) {
+                    IconButton(
+                        onClick = { isExpanded = !isExpanded },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Expand Comments",
+                            tint = Color.Gray
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RowComment(index: Int, comment: QuestionCommentModel) {
+    Row {
+        // 닉네임
+        Text(
+            text = if (comment.isAnonymous) "익명" else comment.author,
+            style = Typography.bodySmall,
+            modifier = Modifier.weight(1f)
+        )
+
+        // 댓글 내용
+        Text(
+            text = comment.content,
+            style = Typography.bodyMedium,
+            modifier = Modifier.weight(2f)
+        )
+
+        // 작성일자
+        Text(
+            text = comment.dateCreated,
+            style = Typography.bodySmall,
+            color = Color.Gray
+        )
     }
 }
 
