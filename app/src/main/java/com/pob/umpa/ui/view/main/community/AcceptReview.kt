@@ -55,7 +55,6 @@ fun AcceptReview() {
                         onOptionSelected = { selectedMajor = it }
                     )
 
-                    // School Dropdown
                     Spinner(
                         text = selectedSchool,
                         options = schools,
@@ -108,7 +107,7 @@ fun Spinner(
             )
 
             Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24), // 드롭다운 아이콘
+                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 modifier = Modifier.size(24.dp)
