@@ -45,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -55,6 +56,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.R
 import com.pob.umpa.domain.MatchingModel
@@ -333,6 +335,10 @@ fun MatchingDetailHeaderText(
 
         Spacer(modifier = Modifier.padding(8.dp))
 
+        MatchingDetailTagList(listOf("학력 인증", "시범 레슨 운영"), true)
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "${lesson.price.toCommaString()}원", style = Typography.bodyLarge
@@ -346,6 +352,48 @@ fun MatchingDetailHeaderText(
             )
         }
     }
+}
+
+@Composable
+fun MatchingDetailTagList(tagList: List<String>, isBordered: Boolean = false) {
+    Row(
+        horizontalArrangement = spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        tagList.forEach { tag ->
+            if (isBordered) BorderedTagItem(tag) else SolidTagItem(tag)
+        }
+    }
+}
+
+@Composable
+fun BorderedTagItem(tag: String) {
+    Text(
+        text = tag,
+        style = Typography.labelMedium,
+        color = UmpaColor.Terri,
+        modifier = Modifier
+            .border(
+                width = 1.dp, color = UmpaColor.Terri, shape = RoundedCornerShape(6.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    )
+}
+
+@Composable
+fun SolidTagItem(tag: String) {
+    Text(
+        text = tag,
+        style = Typography.labelMedium,
+        color = UmpaColor.Black,
+        fontWeight = FontWeight.Normal,
+        modifier = Modifier
+            .clip(RoundedCornerShape(100))
+            .background(
+                UmpaColor.LightBlue
+            )
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+    )
 }
 
 @Composable
