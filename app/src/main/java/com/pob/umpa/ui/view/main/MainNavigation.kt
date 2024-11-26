@@ -24,8 +24,8 @@ fun MainNavigation(
             MatchingScreen(navController, modifier)
         }
         composable("contact/{lessonId}") { backStackEntry ->
+            // 매칭 서비스 상세 부분 스크린
             MatchingDetailScreen(
-                navController = navController,
                 lessonId = backStackEntry.arguments?.getString("lessonId") ?: "",
             )
         }

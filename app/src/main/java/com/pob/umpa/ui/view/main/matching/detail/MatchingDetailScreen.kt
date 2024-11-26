@@ -3,7 +3,6 @@ package com.pob.umpa.ui.view.main.matching.detail
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,20 +27,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,7 +56,6 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.pob.umpa.R
 import com.pob.umpa.domain.MatchingModel
 import com.pob.umpa.domain.MockLessonDetailData.mockLessonDetailData
@@ -73,7 +65,6 @@ import com.pob.umpa.util.toCommaString
 
 @Composable
 fun MatchingDetailScreen(
-    navController: NavController,
     lessonId: String,
     modifier: Modifier = Modifier,
 ) {
@@ -81,9 +72,6 @@ fun MatchingDetailScreen(
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     MatchingDetailLayout(
-        topBar = {
-            MatchingDetailTopBar(navController)
-        },
         header = {
             MatchingDetailSummary(
                 lessonId = lessonId,
@@ -117,68 +105,76 @@ fun MatchingDetailScreen(
                 )
             }
         },
+        modifier = modifier,
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MatchingDetailLayout(
-    topBar: @Composable () -> Unit = {},
     header: @Composable () -> Unit = {},
     stickyHeader: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {},
 ) {
     var isHeaderHide by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val nestedScrollConnection = CustomNestedScrollConnection(isHeaderHide, scrollState)
 
-    Scaffold(topBar = topBar, bottomBar = bottomBar) { innerPadding ->
-        Box(
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(UmpaColor.White)
+            .padding(top = 60.dp)
+    ) {
+        val density = LocalDensity.current
+        var globalHeight by remember { mutableIntStateOf(0) }
+        var headerHeight by remember { mutableIntStateOf(0) }
+
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(UmpaColor.White)
-                .padding(innerPadding)
+                .weight(1f)
+                .fillMaxWidth()
+                .onSizeChanged { size -> globalHeight = size.height }
+                .nestedScroll(nestedScrollConnection)
+                .verticalScroll(scrollState),
         ) {
-            val density = LocalDensity.current
-            var globalHeight by remember { mutableIntStateOf(0) }
-            var headerHeight by remember { mutableIntStateOf(0) }
+            MatchingDetailHeaderSection(
+                onHide = { isHide -> isHeaderHide = isHide },
+            ) { header() }
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .onSizeChanged { size -> globalHeight = size.height }
-                    .nestedScroll(nestedScrollConnection)
-                    .verticalScroll(scrollState),
+                    .fillMaxWidth()
+                    .height(with(density) { globalHeight.toDp() })
+                    .background(UmpaColor.White),
             ) {
-                MatchingDetailHeaderSection(
-                    onHide = { isHide -> isHeaderHide = isHide },
-                ) { header() }
-
-                Column(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(with(density) { globalHeight.toDp() })
-                        .background(UmpaColor.White),
+                        .wrapContentHeight()
+                        .onSizeChanged { size -> headerHeight = size.height },
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .onSizeChanged { size -> headerHeight = size.height },
-                    ) {
-                        stickyHeader()
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(with(density) { globalHeight.toDp() - headerHeight.toDp() })
-                            .padding(24.dp)
-                    ) {
-                        content()
-                    }
+                    stickyHeader()
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(with(density) { globalHeight.toDp() - headerHeight.toDp() })
+                        .padding(24.dp)
+                ) {
+                    content()
                 }
             }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(UmpaColor.White)
+        ) {
+            bottomBar()
         }
     }
 }
@@ -201,24 +197,6 @@ fun MatchingDetailHeaderSection(
         }) {
         header()
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MatchingDetailTopBar(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-    TopAppBar(title = {}, colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = Color.White,
-        navigationIconContentColor = UmpaColor.Black,
-    ), modifier = modifier, navigationIcon = {
-        IconButton(onClick = { navController.popBackStack() }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBackIosNew, contentDescription = "뒤로가기"
-            )
-        }
-    })
 }
 
 @Composable
