@@ -13,6 +13,8 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,9 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,54 +43,75 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             UmpaTheme {
                 val backStackEntry = navController.currentBackStackEntryAsState()
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding(),
-                    topBar = {
-                        MainItemList.forEach { item ->
-                            if(item.route == backStackEntry.value?.destination?.route) {
-                                TopAppBar(
-                                    title = { Text(text = item.topTitle, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
-                                    backgroundColor = Color.White,
-                                    contentColor = Color.Black,
-                                    modifier = Modifier.height(60.dp),
-                                    elevation = 0.dp
-                                )
+                MainScaffold(backStackEntry = backStackEntry, navController = navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun MainScaffold(backStackEntry: androidx.compose.runtime.State<androidx.navigation.NavBackStackEntry?>, navController: androidx.navigation.NavHostController) {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .safeDrawingPadding(),
+        topBar = {
+            MainItemList.forEach { item ->
+                if(backStackEntry.value?.destination?.route == "calendar") {
+                    TopAppBar(
+                        title = { Text(text = "입시 캘린더", fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
+                        backgroundColor = UmpaColor.White,
+                        contentColor = UmpaColor.Black,
+                        modifier = Modifier.height(60.dp),
+                        elevation = 0.dp,
+                        actions = {
+                            IconButton(onClick = { }) {
+                                Icon(painter = painterResource(id = R.drawable.baseline_school_24), contentDescription = null)
                             }
                         }
-                    },
-                    bottomBar = {
-                        BottomNavigation (
-                            backgroundColor = Color.White,
-                            contentColor = Color.Black,
-                            elevation = 10.dp,
-                        ) {
-                            MainItemList.forEach { item ->
-                                BottomNavigationItem(
-                                    selected = item.route == backStackEntry.value?.destination?.route,
-                                    onClick = { navController.navigate(item.route) },
-                                    label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
-                                    icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
-                                    selectedContentColor = Black,
-                                    unselectedContentColor = UmpaColor.MiddleGrey
-                                )
-                            }
-                        }
-                    }
-                ) { innerPadding ->
-                    MainNavigation(
-                        navController = navController,
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .padding(
-                                horizontal = 24.dp,
-                                vertical = 12.dp
-                            ),
+                    )
+                }
+                else if(item.route == backStackEntry.value?.destination?.route) {
+                    TopAppBar(
+                        title = { Text(text = item.topTitle, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
+                        backgroundColor = UmpaColor.White,
+                        contentColor = UmpaColor.Black,
+                        modifier = Modifier.height(60.dp),
+                        elevation = 0.dp
+                    )
+                }
+            }
+        },
+        bottomBar = {
+            BottomNavigation (
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+                elevation = 10.dp,
+            ) {
+                MainItemList.forEach { item ->
+                    BottomNavigationItem(
+                        selected = item.route == backStackEntry.value?.destination?.route,
+                        onClick = { navController.navigate(item.route) },
+                        label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
+                        icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
+                        selectedContentColor = Black,
+                        unselectedContentColor = UmpaColor.MiddleGrey
                     )
                 }
             }
         }
+    ) { innerPadding ->
+        MainNavigation(
+            navController = navController,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(UmpaColor.White)
+                .padding(innerPadding)
+                .padding(
+                    horizontal = 24.dp,
+                    vertical = 12.dp
+                ),
+        )
     }
 }
 
@@ -100,10 +125,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
     UmpaTheme {
-        Greeting("Android")
+        CalendarScreen(modifier = Modifier)
     }
 }

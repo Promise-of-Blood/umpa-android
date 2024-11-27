@@ -49,11 +49,6 @@ fun ChattingScaffoldScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     )
                     {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
                         Column (
                             modifier = Modifier.padding(horizontal = 24.dp)
                         ) {
@@ -76,7 +71,14 @@ fun ChattingScaffoldScreen() {
                 backgroundColor = Color.White,
                 contentColor = Color.Black,
                 modifier = Modifier.height(80.dp),
-                elevation = 5.dp
+                elevation = 5.dp,
+                navigationIcon = {
+                    Spacer(modifier = Modifier.padding(start = 12.dp))
+                    Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                ) }
             )
         }
     ) { innerPadding ->

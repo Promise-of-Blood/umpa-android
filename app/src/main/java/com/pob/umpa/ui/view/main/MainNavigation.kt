@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pob.umpa.ui.view.main.chatting.ChatListScreen
 import com.pob.umpa.ui.view.main.home.HomeScreen
+import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 
 @Composable
 fun MainNavigation(
@@ -18,9 +19,10 @@ fun MainNavigation(
             // 홈 부분 스크린
             HomeScreen(modifier)
         }
-        composable("contact") {
+        composable("calendar") {
             // 매칭 서비스 부분 스크린
-            Greeting(name = "매칭 서비스")
+//            Greeting(name = "매칭 서비스")
+            CalendarScreen(modifier)
         }
         composable("community") {
             // 커뮤니티 부분 스크린
@@ -34,5 +36,9 @@ fun MainNavigation(
             // 내 정보 부분 스크린
             Greeting(name = "내 정보")
         }
+//        composable("calendar") {
+//            // 캘린더 부분 스크린
+//            CalendarScreen(modifier)
+//        }
     }
 }
