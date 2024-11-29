@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.matching.detail
+package com.pob.umpa.ui.view.main.matching.detail.component.tab
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -9,26 +9,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.pob.umpa.domain.CurriculumTabItem
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.matching.detail.component.lightGrayBorder
 
 @Composable
-fun CurriculumScreen(curriculumList: List<String>, modifier: Modifier = Modifier) {
-    CurriculumList(
-        curriculumList = curriculumList, modifier = modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-fun CurriculumList(
-    curriculumList: List<String>, modifier: Modifier = Modifier
+fun CurriculumTab(
+    data: CurriculumTabItem, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .lightGrayBorder()
             .padding(vertical = 8.dp)
     ) {
-        curriculumList.forEachIndexed { index, curriculum ->
+        data.curriculumList.forEachIndexed { index, curriculum ->
             CurriculumItem(
                 week = index + 1,
                 content = curriculum,
@@ -36,7 +31,7 @@ fun CurriculumList(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             )
-            if (index != curriculumList.lastIndex) HorizontalDivider(
+            if (index != data.curriculumList.lastIndex) HorizontalDivider(
                 thickness = 1.dp, color = UmpaColor.LightGray
             )
         }

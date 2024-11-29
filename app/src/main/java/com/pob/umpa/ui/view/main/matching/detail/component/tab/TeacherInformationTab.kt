@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.matching.detail
+package com.pob.umpa.ui.view.main.matching.detail.component.tab
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -30,33 +30,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.domain.SocialLink
-import com.pob.umpa.domain.TeacherDetail
+import com.pob.umpa.domain.TeacherInformationTabItem
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.matching.detail.component.card.Card
 
 @Composable
-fun TeacherInformationScreen(
-    teacherDetail: TeacherDetail, modifier: Modifier = Modifier
+fun TeacherInformationTab(
+    data: TeacherInformationTabItem,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(20.dp), modifier = modifier.fillMaxSize()
+        verticalArrangement = spacedBy(20.dp),
+        modifier = modifier.fillMaxSize(),
     ) {
         Text(
-            text = teacherDetail.summary, style = Typography.bodyLarge, lineHeight = 24.sp
+            text = data.summary, style = Typography.bodyLarge, lineHeight = 24.sp
         )
-
-        Column(
-            verticalArrangement = spacedBy(20.dp),
-            modifier = Modifier
-                .lightGrayBorder()
-                .cardPadding()
-        ) {
-            TeacherProfile(teacherDetail)
-
-            ExperienceList(teacherDetail.experienceList)
-
+        Card {
+            TeacherProfile(data)
+            ExperienceList(data.experienceList)
             Text(
-                text = teacherDetail.introduction,
+                text = data.introduction,
                 style = Typography.bodySmall,
                 lineHeight = 28.sp,
                 color = UmpaColor.Black
@@ -66,8 +61,8 @@ fun TeacherInformationScreen(
 }
 
 @Composable
-fun TeacherProfile(
-    teacherDetail: TeacherDetail, modifier: Modifier = Modifier
+private fun TeacherProfile(
+    teacherDetail: TeacherInformationTabItem, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.height(IntrinsicSize.Max)) {
         Image(
@@ -96,7 +91,7 @@ fun TeacherProfile(
 }
 
 @Composable
-fun SocialLinkList(socialLinkList: List<SocialLink>, modifier: Modifier = Modifier) {
+private fun SocialLinkList(socialLinkList: List<SocialLink>, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = spacedBy(8.dp),
         modifier = modifier,
@@ -120,7 +115,7 @@ fun SocialLinkList(socialLinkList: List<SocialLink>, modifier: Modifier = Modifi
 }
 
 @Composable
-fun ExperienceList(experienceList: List<String>, modifier: Modifier = Modifier) {
+private fun ExperienceList(experienceList: List<String>, modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = spacedBy(4.dp)
     ) {
@@ -143,3 +138,4 @@ fun ExperienceList(experienceList: List<String>, modifier: Modifier = Modifier) 
         }
     }
 }
+

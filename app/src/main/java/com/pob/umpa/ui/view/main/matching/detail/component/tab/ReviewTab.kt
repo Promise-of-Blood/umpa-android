@@ -1,9 +1,10 @@
-package com.pob.umpa.ui.view.main.matching.detail
+package com.pob.umpa.ui.view.main.matching.detail.component.tab
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,18 +47,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.pob.umpa.domain.Review
-import com.pob.umpa.domain.SuccessStory
+import com.pob.umpa.domain.ReviewItem
+import com.pob.umpa.domain.ReviewTabItem
+import com.pob.umpa.domain.SuccessStoryItem
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.matching.detail.component.lightGrayBorder
 import java.time.format.DateTimeFormatter
 import kotlin.math.ceil
 import kotlin.math.floor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReviewScreen(
-    reviewList: List<Review>, successStoryList: List<SuccessStory>, modifier: Modifier = Modifier
+fun ReviewTab(
+    data: ReviewTabItem, modifier: Modifier = Modifier
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -75,14 +79,14 @@ fun ReviewScreen(
 
         when (selectedTabIndex) {
             0 -> {
-                item { ReviewHeader(rating = 4.5f, reviewCount = reviewList.size) }
-                items(reviewList) { review ->
+                item { ReviewHeader(rating = 4.5f, reviewCount = data.reviewList.size) }
+                items(data.reviewList) { review ->
                     ReviewItem(review = review)
                 }
             }
 
             else -> {
-                items(successStoryList) { successStory ->
+                items(data.successStoryList) { successStory ->
                     SuccessStoryItem(successStory = successStory)
                 }
             }
@@ -91,7 +95,7 @@ fun ReviewScreen(
 }
 
 @Composable
-fun ReviewHeader(
+private fun ReviewHeader(
     rating: Float,
     reviewCount: Int,
     modifier: Modifier = Modifier,
@@ -109,8 +113,8 @@ fun ReviewHeader(
 }
 
 @Composable
-fun ReviewItem(
-    review: Review, modifier: Modifier = Modifier
+private fun ReviewItem(
+    review: ReviewItem, modifier: Modifier = Modifier
 ) {
     val minimumLineLength = 3
     var isReadMore by remember { mutableStateOf(false) }
@@ -201,6 +205,7 @@ fun ReviewItem(
                 modifier = Modifier
                     .padding(vertical = 4.dp)
                     .fillMaxSize()
+                    .horizontalScroll(rememberScrollState()),
             ) {
                 review.contentImageList.forEachIndexed { index, image ->
                     Image(
@@ -226,8 +231,8 @@ fun ReviewItem(
 }
 
 @Composable
-fun SuccessStoryItem(
-    successStory: SuccessStory, modifier: Modifier = Modifier
+private fun SuccessStoryItem(
+    successStory: SuccessStoryItem, modifier: Modifier = Modifier
 ) {
     Column(
         verticalArrangement = spacedBy(12.dp), modifier = modifier
@@ -297,7 +302,7 @@ fun SuccessStoryItem(
 }
 
 @Composable
-fun ReviewTabMenu(
+private fun ReviewTabMenu(
     selectedTabIndex: Int = 0, onTabSelected: (Int) -> Unit = {}, modifier: Modifier = Modifier
 ) {
     val tabs = listOf("리뷰", "합격 후기")
@@ -321,7 +326,7 @@ fun ReviewTabMenu(
 }
 
 @Composable
-fun StarRatingBar(
+private fun StarRatingBar(
     rating: Float,
     size: Dp = 20.dp,
     modifier: Modifier = Modifier,
@@ -373,3 +378,4 @@ fun StarRatingBar(
         }
     }
 }
+
