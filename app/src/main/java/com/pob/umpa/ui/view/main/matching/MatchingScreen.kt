@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -47,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
+import com.pob.umpa.common.InstrumentsTypeList
+import com.pob.umpa.common.lessonTypeList
 import com.pob.umpa.domain.MatchingModel
 import com.pob.umpa.domain.MockLessonData
 import com.pob.umpa.ui.theme.Typography

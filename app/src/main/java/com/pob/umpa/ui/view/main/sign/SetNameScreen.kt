@@ -94,7 +94,7 @@ fun SetNameScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = {},
+                onClick = { navController.navigate("set_major")},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
