@@ -14,5 +14,6 @@ fun SignNavigation() {
         composable("user_type") { UserTypeSelectionScreen(navController)}
         composable("set_name") { SetNameScreen(navController)}
         composable("set_major") { SetMajorScreen(navController)}
+        composable("sign_end") { SignEndScreen(navController)}
     }
 }
