@@ -15,5 +15,6 @@ fun SignNavigation() {
         composable("set_name") { SetNameScreen(navController)}
         composable("set_major") { SetMajorScreen(navController)}
         composable("sign_end") { SignEndScreen(navController)}
+        composable("set_student_nickname") { SetStudentNickname(navController)}
     }
 }
