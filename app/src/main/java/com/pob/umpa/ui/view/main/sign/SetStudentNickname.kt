@@ -94,7 +94,7 @@ fun SetStudentNickname(navController: NavHostController) {
             }
 
             Button(
-                onClick = { navController.navigate("set_major") },
+                onClick = { navController.navigate("set_student_major") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),

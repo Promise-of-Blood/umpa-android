@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,17 +39,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.common.InstrumentsTypeList
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
-
 @Composable
-fun SetMajorScreen(navController: NavHostController) {
-
+fun SetStudentMajorScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -90,7 +87,7 @@ fun SetMajorScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(200.dp))
 
-                SignMajorDropDownMenu(dropMenuList = InstrumentsTypeList)
+                SignStudentMajorDropDownMenu(dropMenuList = InstrumentsTypeList)
 
 
             }
@@ -108,7 +105,7 @@ fun SetMajorScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SignMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<String>) {
+fun SignStudentMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<String>) {
 
     val context = LocalContext.current
 
@@ -121,7 +118,7 @@ fun SignMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Stri
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier.fillMaxWidth().height(50.dp),
 
-    ) {
+        ) {
         Row(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
@@ -174,9 +171,9 @@ fun SignMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Stri
 
 @Preview(showBackground = true)
 @Composable
-fun SetMajorScreenPreview() {
+fun SetStudentMajorScreenPreview() {
     UmpaTheme {
         val navController = rememberNavController()
-        SetMajorScreen(navController)
+        SetStudentMajorScreen(navController)
     }
 }
