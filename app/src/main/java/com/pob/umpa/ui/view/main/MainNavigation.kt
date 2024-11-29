@@ -13,11 +13,12 @@ import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 fun MainNavigation(
     navController : NavHostController,
     modifier: Modifier,
+    onScaffoldChange: (ScaffoldType) -> Unit
 ) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             // 홈 부분 스크린
-            HomeScreen(modifier)
+            HomeScreen(modifier, onScaffoldChange)
         }
         composable("calendar") {
             // 매칭 서비스 부분 스크린

@@ -2,6 +2,7 @@ package com.pob.umpa.ui.view.main.chatting
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +52,9 @@ fun ChatListScreen(modifier: Modifier) {
 
 @Composable
 fun ChatListItem() {
-    Column {
+    Column (
+        Modifier.clickable {  }
+    ) {
         Row (
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically

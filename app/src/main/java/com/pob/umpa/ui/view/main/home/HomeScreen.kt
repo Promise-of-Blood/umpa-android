@@ -6,6 +6,7 @@ import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -51,11 +53,12 @@ import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.ScaffoldType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(modifier: Modifier,) {
+fun HomeScreen(modifier: Modifier, onScaffoldChange: (ScaffoldType) -> Unit) {
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -78,7 +81,7 @@ fun HomeScreen(modifier: Modifier,) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 HomeItemTitle(modifier = Modifier, title = "입시 캘린더")
                 Spacer(modifier = Modifier.padding(6.dp))
-                HomeCalendar()
+                HomeCalendar(onScaffoldChange)
                 Spacer(modifier = Modifier.padding(16.dp))
             }
         }
@@ -253,7 +256,7 @@ fun HomeCommunityShortcutItem(item: CommunityShortcutItem) {
 
 //
 @Composable
-fun HomeCalendar() {
+fun HomeCalendar(onScaffoldChange: (ScaffoldType) -> Unit) {
     Log.d("달력 날짜 표시", "${getNowMonth()}, ${getFirstDay()}, ${getLastDay()}")
     // 30 * 6 (박스) + 2 * 5 (선) + 10(패딩)
     Box (
@@ -263,7 +266,9 @@ fun HomeCalendar() {
             .padding(10.dp)
             .clip(RoundedCornerShape(10.dp))
             .border(2.dp, UmpaColor.LightGray, shape = RoundedCornerShape(10.dp))
-            .background(UmpaColor.LightGray),
+            .background(UmpaColor.LightGray)
+            .clickable { onScaffoldChange(ScaffoldType.CalendarSchool) }
+        ,
         contentAlignment = Alignment.Center
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(7), verticalArrangement = Arrangement.Center) {

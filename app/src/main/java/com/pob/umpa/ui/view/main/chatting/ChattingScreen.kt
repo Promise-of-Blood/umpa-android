@@ -35,9 +35,12 @@ import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.ScaffoldType
 
 @Composable
-fun ChattingScaffoldScreen() {
+fun ChattingScaffoldScreen(
+    onScaffoldChange: (ScaffoldType) -> Unit
+) {
     Scaffold (
         modifier = Modifier
             .fillMaxSize()
@@ -196,5 +199,4 @@ fun ChatTimestamp(modifier: Modifier, time: String) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ChattingScreenPreview() {
-    ChattingScaffoldScreen()
 }

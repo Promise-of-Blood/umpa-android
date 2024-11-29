@@ -18,6 +18,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
@@ -33,6 +37,8 @@ import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.chatting.ChattingScaffoldScreen
+import com.pob.umpa.ui.view.main.home.calendar.CalendarSchoolScreen
 import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 
 class MainActivity : ComponentActivity() {
@@ -41,16 +47,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            var scaffoldState by remember { mutableStateOf( ScaffoldType.Main ) }
+            val onScaffoldChange = { scaffoldType : ScaffoldType ->
+                scaffoldState = scaffoldType
+            }
             UmpaTheme {
                 val backStackEntry = navController.currentBackStackEntryAsState()
-                MainScaffold(backStackEntry = backStackEntry, navController = navController)
+                when(scaffoldState) {
+                    ScaffoldType.Main -> MainScaffold(backStackEntry = backStackEntry, navController = navController, onScaffoldChange = onScaffoldChange)
+                    ScaffoldType.CalendarSchool -> CalendarSchoolScreen(onScaffoldChange = onScaffoldChange)
+                    ScaffoldType.Chatting -> ChattingScaffoldScreen(onScaffoldChange = onScaffoldChange)
+                }
             }
         }
     }
 }
 
 @Composable
-fun MainScaffold(backStackEntry: androidx.compose.runtime.State<androidx.navigation.NavBackStackEntry?>, navController: androidx.navigation.NavHostController) {
+fun MainScaffold(
+    backStackEntry: androidx.compose.runtime.State<androidx.navigation.NavBackStackEntry?>,
+    navController: androidx.navigation.NavHostController,
+    onScaffoldChange: (ScaffoldType) -> Unit
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -111,8 +129,14 @@ fun MainScaffold(backStackEntry: androidx.compose.runtime.State<androidx.navigat
                     horizontal = 24.dp,
                     vertical = 12.dp
                 ),
+            onScaffoldChange = onScaffoldChange
         )
     }
+}
+
+@Composable
+fun NoBottomBarScaffold() {
+
 }
 
 @Composable
