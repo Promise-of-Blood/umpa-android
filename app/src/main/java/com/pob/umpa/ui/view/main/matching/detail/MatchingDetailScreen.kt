@@ -59,10 +59,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.R
+import com.pob.umpa.domain.MatchingDetailModel
 import com.pob.umpa.domain.MatchingModel
-import com.pob.umpa.domain.MockLessonDetailData.mockLessonDetailData
+import com.pob.umpa.domain.MockLessonDetailData.mockAccompanimentLessonDetailData
+import com.pob.umpa.domain.MockLessonDetailData.mockComposingLessonDetailData
+import com.pob.umpa.domain.MockLessonDetailData.mockMrProductionLessonDetailData
+import com.pob.umpa.domain.MockLessonDetailData.mockScoreProductionLessonDetailData
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.matching.detail.component.Render
 import com.pob.umpa.util.toCommaString
 
 @Composable
@@ -70,20 +75,26 @@ fun MatchingDetailScreen(
     lessonId: String,
     modifier: Modifier = Modifier,
 ) {
-    val tabs = listOf("선생님 소개", "수업 소개", "커리큘럼", "리뷰")
+    val mockDataList = listOf<MatchingDetailModel>(
+        mockComposingLessonDetailData,
+        mockScoreProductionLessonDetailData,
+        mockAccompanimentLessonDetailData,
+        mockMrProductionLessonDetailData,
+    )
+    val mockData = mockDataList.random()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     MatchingDetailLayout(
         header = {
             MatchingDetailSummary(
                 lessonId = lessonId,
-                lessonSummary = mockLessonDetailData.lessonSummary,
+                lessonSummary = mockData.summary,
                 modifier = Modifier.padding(24.dp),
             )
         },
         stickyHeader = {
             CustomTabMenu(
-                tabs = tabs,
+                tabs = mockData.tabList.map { it.first.label },
                 selectedTabIndex = selectedTabIndex,
                 onTabSelected = { selectedTabIndex = it },
                 modifier = Modifier
@@ -97,15 +108,11 @@ fun MatchingDetailScreen(
             )
         },
         content = {
-            when (selectedTabIndex) {
-                0 -> TeacherInformationScreen(mockLessonDetailData.teacherDetail)
-                1 -> LessonInformationScreen(mockLessonDetailData.lessonDetail)
-                2 -> CurriculumScreen(mockLessonDetailData.curriculumList)
-                3 -> ReviewScreen(
-                    reviewList = mockLessonDetailData.reviewList,
-                    successStoryList = mockLessonDetailData.successStoryList
+            mockData.tabList[selectedTabIndex].second.Render(
+                Modifier.verticalScroll(
+                    rememberScrollState()
                 )
-            }
+            )
         },
         modifier = modifier,
     )
@@ -165,7 +172,11 @@ fun MatchingDetailLayout(
                         .height(with(density) { globalHeight.toDp() - headerHeight.toDp() })
                         .padding(24.dp)
                 ) {
-                    content()
+                    Column(
+                        verticalArrangement = spacedBy(24.dp),
+                    ) {
+                        content()
+                    }
                 }
             }
         }
@@ -430,6 +441,7 @@ fun CustomTabMenu(
         ) {
             tabs.forEachIndexed { index, title ->
                 Box(modifier = Modifier
+                    .weight(1f)
                     .padding(vertical = 8.dp)
                     .onGloballyPositioned { layoutCoordinates ->
                         tabPositions[index] = layoutCoordinates.positionInParent()
