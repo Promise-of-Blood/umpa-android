@@ -1,5 +1,6 @@
 package com.pob.umpa.ui.view.main.sign
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,9 +26,12 @@ import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.MainActivity
 
 @Composable
 fun SignEndScreen(navController: NavHostController) {
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -57,7 +62,10 @@ fun SignEndScreen(navController: NavHostController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp),
