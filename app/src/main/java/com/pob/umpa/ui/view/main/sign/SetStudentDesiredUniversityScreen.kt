@@ -101,7 +101,7 @@ fun SetStudentDesiredUniversity(navController: NavController) {
             }
 
             Button(
-                onClick = {},
+                onClick = { navController.navigate("sign_end") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),

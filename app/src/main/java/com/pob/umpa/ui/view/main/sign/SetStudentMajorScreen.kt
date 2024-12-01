@@ -93,7 +93,7 @@ fun SetStudentMajorScreen(navController: NavController) {
             }
 
             Button(
-                onClick = {},
+                onClick = { navController.navigate("set_student_university") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
@@ -116,7 +116,9 @@ fun SignStudentMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: Li
         onClick = { isDropDownMenuExpanded = true },
         border = BorderStroke(1.dp, Color.LightGray),
         shape = RoundedCornerShape(5.dp),
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
 
         ) {
         Row(

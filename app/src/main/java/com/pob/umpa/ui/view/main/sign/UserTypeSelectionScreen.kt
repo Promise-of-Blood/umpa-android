@@ -22,6 +22,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +57,8 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
 
         }
     ) { paddingValues ->
+
+        var userType by remember { mutableStateOf("student") }
 
         Column(
             modifier = Modifier
@@ -93,23 +99,12 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
                     .padding(top = 30.dp)
                     .weight(2.5f),
             ) {
-                Text(
-                    text = "학생회원은! \n",
-                    fontFamily = pretendardFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 20.sp
-                )
 
-                Text(
-                    text = "매칭기능을 통해\n" +
-                            "선생님 / 입시 반주자 / 악보제작자를 살펴보고 구할 수 있어요!\n" +
-                            "\n커뮤니티를 통해 다른 사람들의 입시 후기를 확인 할 수 있어요\n" +
-                            "\n등등 회원 설명 써놓기~~",
-                    fontFamily = pretendardFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 18.sp,
-                    lineHeight = 20.sp
-                )
+                if (userType == "student") {
+                    StudentDescription()
+                } else {
+                    TeacherDescription()
+                }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -120,18 +115,20 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
                     .padding(horizontal = 30.dp)
             ) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                        if (userType != "student") userType = "student"
+                    },
                     shape = RoundedCornerShape(3.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = UmpaColor.White,
-                        contentColor = UmpaColor.Main
+                        containerColor = if (userType == "student") UmpaColor.White else UmpaColor.Main,
+                        contentColor = if (userType == "student") UmpaColor.Main else UmpaColor.White
                     ),
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp)
                         .border(
                             width = 1.dp,
-                            color = UmpaColor.Main,
+                            color = if (userType == "student") UmpaColor.Main else UmpaColor.White,
                             RoundedCornerShape(3.dp)
                         )
                 ) {
@@ -146,14 +143,19 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = { if (userType != "teacher") userType = "teacher" },
                     shape = RoundedCornerShape(3.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .height(50.dp),
+                        .height(50.dp)
+                        .border(
+                            width = 1.dp,
+                            color = if (userType != "teacher") UmpaColor.White else UmpaColor.Main,
+                            RoundedCornerShape(3.dp)
+                        ),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = UmpaColor.Main,
-                        contentColor = UmpaColor.White
+                        containerColor = if (userType != "teacher") UmpaColor.Main else UmpaColor.White,
+                        contentColor = if (userType != "teacher") UmpaColor.White else UmpaColor.Main
                     ),
                 ) {
                     Text(
@@ -167,7 +169,11 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = {navController.navigate("set_name")},
+                onClick = {
+                    if (userType == "student") navController.navigate("set_name") else navController.navigate(
+                        "set_student_nickname"
+                    )
+                },
                 shape = RoundedCornerShape(3.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = UmpaColor.Main,
@@ -186,6 +192,48 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
 
 
     }
+}
+
+@Composable
+fun StudentDescription(modifier: Modifier = Modifier) {
+    Text(
+        text = "학생회원은! \n",
+        fontFamily = pretendardFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp
+    )
+
+    Text(
+        text = "매칭기능을 통해\n" +
+                "선생님 / 입시 반주자 / 악보제작자를 살펴보고 구할 수 있어요!\n" +
+                "\n커뮤니티를 통해 다른 사람들의 입시 후기를 확인 할 수 있어요\n" +
+                "\n등등 회원 설명 써놓기~~",
+        fontFamily = pretendardFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 20.sp
+    )
+}
+
+@Composable
+fun TeacherDescription(modifier: Modifier = Modifier) {
+    Text(
+        text = "선생님 회원은! \n",
+        fontFamily = pretendardFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp
+    )
+
+    Text(
+        text = "매칭기능을 통해\n" +
+                "선생님 / 입시 반주자 / 악보제작자를 등록하고 학생을 구할 수 있어요!\n" +
+                "\n커뮤니티를 통해 다른 사람들의 입시 후기를 확인 할 수 있어요\n" +
+                "\n등등 회원 설명 써놓기~~",
+        fontFamily = pretendardFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 20.sp
+    )
 }
 
 @Preview(showBackground = true)

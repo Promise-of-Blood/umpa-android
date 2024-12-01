@@ -96,7 +96,7 @@ fun SetMajorScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = {},
+                onClick = { navController.navigate("sign_end") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
@@ -119,9 +119,11 @@ fun SignMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Stri
         onClick = { isDropDownMenuExpanded = true },
         border = BorderStroke(1.dp, Color.LightGray),
         shape = RoundedCornerShape(5.dp),
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
 
-    ) {
+        ) {
         Row(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
