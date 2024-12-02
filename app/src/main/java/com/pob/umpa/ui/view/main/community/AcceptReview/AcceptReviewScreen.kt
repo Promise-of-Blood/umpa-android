@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.community
+package com.pob.umpa.ui.view.main.community.AcceptReview
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.R
@@ -26,7 +27,7 @@ import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
 @Composable
-fun AcceptReview() {
+fun AcceptReviewScreen() {
     var selectedMajor by remember { mutableStateOf("전공") }
     var selectedSchool by remember { mutableStateOf("학교") }
 
@@ -40,7 +41,7 @@ fun AcceptReview() {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
+            contentPadding = PaddingValues(16.dp)
         ) {
             item {
                 Row(
@@ -48,7 +49,6 @@ fun AcceptReview() {
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Major Dropdown
                     Spinner(
                         text = selectedMajor,
                         options = majors,
@@ -86,12 +86,12 @@ fun Spinner(
             modifier = Modifier
                 .background(
                     color = UmpaColor.White,
-                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(32.dp)) // 둥근 모양
+                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(32.dp))
                 )
                 .border(
                     width = 1.dp,
                     color = UmpaColor.MiddleGrey,
-                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(32.dp)) // 테두리 둥근 모양
+                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(32.dp))
                 )
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .wrapContentSize(),
@@ -201,4 +201,10 @@ fun Review() {
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AcceptReviewScreenPreview() {
+    AcceptReviewScreen()
 }
