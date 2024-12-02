@@ -6,6 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pob.umpa.ui.view.main.Greeting
+import com.pob.umpa.ui.view.main.community.AcceptReview.AcceptReviewScreen
+import com.pob.umpa.ui.view.main.community.InformationSharing.InformationSharingScreen
+import com.pob.umpa.ui.view.main.community.Mentoring.MentoringScreen
+import com.pob.umpa.ui.view.main.community.Question.QuestionsScreen
 
 @Composable
 fun CommunityNavigation(
@@ -14,7 +18,7 @@ fun CommunityNavigation(
 ) {
     NavHost(navController = navController, startDestination = "accept_review", modifier = modifier) {
         composable("accept_review") {
-            AcceptReview()
+            AcceptReviewScreen()
         }
         composable("information_sharing") {
             InformationSharingScreen()
@@ -23,7 +27,7 @@ fun CommunityNavigation(
             QuestionsScreen()
         }
         composable("mentoring") {
-            Greeting(name = "멘토링")
+            MentoringScreen()
         }
     }
 }
