@@ -32,7 +32,7 @@ fun MainNavigation(
         }
         composable("community") {
             // 커뮤니티 부분 스크린
-            CommunityScreen(modifier)
+            CommunityScreen()
         }
         composable("chatting") {
             // 채팅 부분 스크린
