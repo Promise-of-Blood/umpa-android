@@ -75,29 +75,29 @@ fun EditProfileScreen() {
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            EditProfileTitle(modifier = Modifier, title = "프로필 사진")
+            EditProfileTitle(modifier = Modifier, title = "프로필 사진",true)
             ProfilePhoto {}
 
             Row(){
                 Column(Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    EditProfileTitle(Modifier, "전공 과목")
+                    EditProfileTitle(Modifier, "전공 과목",true)
                     SpinnerWithButton(optionList = subjectList, "전공 선택")
                 }
                 Column(Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    EditProfileTitle(Modifier, "레슨지역")
+                    EditProfileTitle(Modifier, "레슨지역",true)
                     SpinnerWithButton(optionList = locationList, "레슨 지역")
                 }
             }
 
-            EditProfileTitle(modifier = Modifier, title = "대표 문구" )
+            EditProfileTitle(modifier = Modifier, title = "대표 문구",true )
             EditText("대표 문구를 입력하세요")
 
-            EditProfileTitle(modifier = Modifier, title = "사이트 링크" )
+            EditProfileTitle(modifier = Modifier, title = "사이트 링크" ,false)
             DefaultButton(text = "링크 추가하기")
 
-            EditProfileTitle(modifier = Modifier, title = "경력 사항" )
+            EditProfileTitle(modifier = Modifier, title = "경력 사항" ,false)
             EditText("대표 경력 사항을 입력해주세요")
             Box(
                 modifier = Modifier.fillMaxWidth(),
@@ -111,7 +111,7 @@ fun EditProfileScreen() {
                 )
             }
 
-            EditProfileTitle(modifier = Modifier, title = "소개글")
+            EditProfileTitle(modifier = Modifier, title = "소개글",true)
             EditText("소개글을 입력해주세요")
 
 
@@ -126,14 +126,22 @@ fun EditProfileScreen() {
 }
 
 @Composable
-fun EditProfileTitle(modifier: Modifier, title: String) {
-    Row() {
+fun EditProfileTitle(modifier: Modifier, title: String, isRequired: Boolean) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = title,
             fontFamily = pretendardFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
+        if(isRequired){
+            Spacer(modifier.size(8.dp))
+            Text(
+                text = "필수",
+                fontFamily = pretendardFontFamily,
+                fontSize = 10.sp,
+                color = Main)
+        }
         Spacer(modifier.size(8.dp))
         Icon(
             modifier = Modifier.size(18.dp),
