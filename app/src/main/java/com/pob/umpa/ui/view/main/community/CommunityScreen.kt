@@ -14,14 +14,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.community.Question.QuestionsScreen
 
 
 @Composable
-fun CommunityScreen(modifier: Modifier = Modifier) {
+fun CommunityScreen() {
     val navController = rememberNavController()
     val selectedIndex = remember { mutableStateOf(0) }
     val tabs = listOf(
@@ -31,7 +33,8 @@ fun CommunityScreen(modifier: Modifier = Modifier) {
         "멘토링" to "mentoring"
     )
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()
+        .padding(vertical = 56.dp)) {
         val backStackEntry = navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry.value?.destination?.route
         selectedIndex.value = tabs.indexOfFirst { it.second == currentRoute }.takeIf { it != -1 } ?: 0
@@ -70,4 +73,10 @@ fun CommunityScreen(modifier: Modifier = Modifier) {
         }
         CommunityNavigation(navController = navController, modifier = Modifier.fillMaxSize())
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CommunityScreenPreview() {
+    CommunityScreen()
 }
