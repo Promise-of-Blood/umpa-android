@@ -23,15 +23,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaColor
@@ -39,7 +37,10 @@ import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
 @Composable
-fun UserTypeSelectionScreen(navController: NavHostController) {
+fun UserTypeSelectionScreen(
+    navController: NavHostController,
+    viewModel: SignViewModel = viewModel()
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,7 +59,7 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
         }
     ) { paddingValues ->
 
-        var userType by remember { mutableStateOf("student") }
+        val userType by viewModel.userType
 
         Column(
             modifier = Modifier
@@ -100,7 +101,7 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
                     .weight(2.5f),
             ) {
 
-                if (userType == "student") {
+                if (userType == UserType.STUDENT) {
                     StudentDescription()
                 } else {
                     TeacherDescription()
@@ -116,19 +117,19 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
             ) {
                 Button(
                     onClick = {
-                        if (userType != "student") userType = "student"
+                        if (userType != UserType.STUDENT) viewModel.setUserType(UserType.STUDENT)
                     },
                     shape = RoundedCornerShape(3.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (userType == "student") UmpaColor.White else UmpaColor.Main,
-                        contentColor = if (userType == "student") UmpaColor.Main else UmpaColor.White
+                        containerColor = if (userType == UserType.STUDENT) UmpaColor.White else UmpaColor.Main,
+                        contentColor = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White
                     ),
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp)
                         .border(
                             width = 1.dp,
-                            color = if (userType == "student") UmpaColor.Main else UmpaColor.White,
+                            color = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White,
                             RoundedCornerShape(3.dp)
                         )
                 ) {
@@ -143,19 +144,21 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Button(
-                    onClick = { if (userType != "teacher") userType = "teacher" },
+                    onClick = {
+                        if (userType != UserType.TEACHER) viewModel.setUserType(UserType.TEACHER)
+                    },
                     shape = RoundedCornerShape(3.dp),
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp)
                         .border(
                             width = 1.dp,
-                            color = if (userType != "teacher") UmpaColor.White else UmpaColor.Main,
+                            color = if (userType != UserType.TEACHER) UmpaColor.White else UmpaColor.Main,
                             RoundedCornerShape(3.dp)
                         ),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (userType != "teacher") UmpaColor.Main else UmpaColor.White,
-                        contentColor = if (userType != "teacher") UmpaColor.White else UmpaColor.Main
+                        containerColor = if (userType != UserType.TEACHER) UmpaColor.Main else UmpaColor.White,
+                        contentColor = if (userType != UserType.TEACHER) UmpaColor.White else UmpaColor.Main
                     ),
                 ) {
                     Text(
@@ -170,7 +173,7 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    if (userType == "student") navController.navigate("set_name") else navController.navigate(
+                    if (userType == UserType.STUDENT) navController.navigate("set_name") else navController.navigate(
                         "set_student_nickname"
                     )
                 },
@@ -191,6 +194,34 @@ fun UserTypeSelectionScreen(navController: NavHostController) {
         }
 
 
+    }
+}
+
+@Composable
+fun UserTypeButton(modifier: Modifier = Modifier, viewModel: SignViewModel, userType: UserType) {
+    Button(
+        onClick = {
+            if (userType != UserType.STUDENT) viewModel.setUserType(UserType.STUDENT)
+        },
+        shape = RoundedCornerShape(3.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (userType == UserType.STUDENT) UmpaColor.White else UmpaColor.Main,
+            contentColor = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White
+        ),
+        modifier = Modifier
+            .height(50.dp)
+            .border(
+                width = 1.dp,
+                color = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White,
+                RoundedCornerShape(3.dp)
+            )
+    ) {
+        Text(
+            text = "학생 회원",
+            fontFamily = pretendardFontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp
+        )
     }
 }
 
