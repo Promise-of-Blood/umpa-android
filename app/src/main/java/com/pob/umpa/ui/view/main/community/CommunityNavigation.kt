@@ -3,9 +3,11 @@ package com.pob.umpa.ui.view.main.community
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pob.umpa.ui.view.main.Greeting
+import androidx.navigation.navArgument
+import com.pob.umpa.ui.view.main.community.AcceptReview.AcceptReviewDetailScreen
 import com.pob.umpa.ui.view.main.community.AcceptReview.AcceptReviewScreen
 import com.pob.umpa.ui.view.main.community.InformationSharing.InformationSharingScreen
 import com.pob.umpa.ui.view.main.community.Mentoring.MentoringScreen
@@ -28,6 +30,13 @@ fun CommunityNavigation(
         }
         composable("mentoring") {
             MentoringScreen()
+        }
+        composable(
+            route = "accept_review_detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+            AcceptReviewDetailScreen(acceptDetailId = id)
         }
     }
 }
