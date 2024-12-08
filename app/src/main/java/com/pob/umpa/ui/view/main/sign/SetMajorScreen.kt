@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.common.InstrumentsTypeList
@@ -49,7 +50,9 @@ import com.pob.umpa.ui.theme.pretendardFontFamily
 
 
 @Composable
-fun SetMajorScreen(navController: NavHostController) {
+fun SetMajorScreen(navController: NavHostController, viewModel: SignViewModel) {
+
+    val userType by viewModel.userType
 
     Scaffold(
         topBar = {
@@ -96,7 +99,12 @@ fun SetMajorScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = { navController.navigate("sign_end") },
+                onClick = {
+                    when (userType) {
+                        UserType.STUDENT -> navController.navigate("sign_end")
+                        UserType.TEACHER -> navController.navigate("set_student_university")
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
@@ -179,6 +187,6 @@ fun SignMajorDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<Stri
 fun SetMajorScreenPreview() {
     UmpaTheme {
         val navController = rememberNavController()
-        SetMajorScreen(navController)
+        SetMajorScreen(navController, viewModel = hiltViewModel())
     }
 }
