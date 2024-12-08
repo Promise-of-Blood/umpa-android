@@ -1,5 +1,6 @@
 package com.pob.umpa.ui.view.main.sign
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,13 +30,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 
 @Composable
-fun SetNameScreen(navController: NavHostController) {
+fun SetNameScreen(navController: NavHostController, viewModel: SignViewModel) {
+
+    val userType by viewModel.userType
+    var setText by remember { mutableStateOf("") }
+
+    setText = when (userType) {
+        UserType.STUDENT -> "이름"
+        UserType.TEACHER -> "닉네임"
+    }
+    Log.d("setName userType", userType.toString())
 
     Scaffold(
         topBar = {
@@ -74,15 +86,15 @@ fun SetNameScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(100.dp))
 
-                Text("이름을 입력해 주세요", fontSize = 30.sp)
+                Text("${setText}을 입력해 주세요", fontSize = 30.sp)
 
                 Spacer(modifier = Modifier.height(200.dp))
 
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text(text = "이름", color = UmpaColor.Black) },
-                    placeholder = { Text(text = "이름을 입력 해주세요", color = UmpaColor.Grey) },
+                    label = { Text(text = setText, color = UmpaColor.Black) },
+                    placeholder = { Text(text = "${setText}을 입력 해주세요", color = UmpaColor.Grey) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.AccountBox,
@@ -94,7 +106,7 @@ fun SetNameScreen(navController: NavHostController) {
             }
 
             Button(
-                onClick = { navController.navigate("set_major")},
+                onClick = { navController.navigate("set_major") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
@@ -111,6 +123,6 @@ fun SetNameScreen(navController: NavHostController) {
 fun SetNameScreenPreview() {
     UmpaTheme {
         val navController = rememberNavController()
-        SetNameScreen(navController)
+        SetNameScreen(navController, viewModel = hiltViewModel())
     }
 }
