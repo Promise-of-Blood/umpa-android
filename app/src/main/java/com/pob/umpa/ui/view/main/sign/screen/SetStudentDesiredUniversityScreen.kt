@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.sign
+package com.pob.umpa.ui.view.main.sign.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke

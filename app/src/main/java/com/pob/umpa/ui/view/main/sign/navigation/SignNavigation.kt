@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.sign
+package com.pob.umpa.ui.view.main.sign.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -6,6 +6,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.pob.umpa.ui.view.main.sign.screen.SetMajorScreen
+import com.pob.umpa.ui.view.main.sign.screen.SetNameScreen
+import com.pob.umpa.ui.view.main.sign.screen.SetStudentDesiredUniversity
+import com.pob.umpa.ui.view.main.sign.screen.SignEndScreen
+import com.pob.umpa.ui.view.main.sign.screen.SignInScreen
+import com.pob.umpa.ui.view.main.sign.screen.UserTypeSelectionScreen
 
 @Composable
 fun SignNavigation() {

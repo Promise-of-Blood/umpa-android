@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.sign
+package com.pob.umpa.ui.view.main.sign.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,6 +34,8 @@ import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import com.pob.umpa.ui.view.main.sign.SignViewModel
+import com.pob.umpa.ui.view.main.sign.UserType
 
 @Composable
 fun UserTypeSelectionScreen(

@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.sign
+package com.pob.umpa.ui.view.main.sign.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

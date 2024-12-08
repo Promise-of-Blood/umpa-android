@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaTheme
+import com.pob.umpa.ui.view.main.sign.screen.SignInScreen
+import com.pob.umpa.ui.view.main.sign.navigation.SignNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

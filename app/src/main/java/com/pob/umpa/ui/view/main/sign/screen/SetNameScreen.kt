@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.sign
+package com.pob.umpa.ui.view.main.sign.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -31,11 +31,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
+import com.pob.umpa.ui.view.main.sign.SignViewModel
+import com.pob.umpa.ui.view.main.sign.UserType
 
 @Composable
 fun SetNameScreen(navController: NavHostController, viewModel: SignViewModel) {
