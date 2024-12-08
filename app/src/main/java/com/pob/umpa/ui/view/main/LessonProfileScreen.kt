@@ -74,7 +74,7 @@ fun EditLessonProfileScreen() {
             .background(UmpaColor.White)
     ) {
 
-        //LessonPhoto {}
+        LessonPhoto {}
 
         Column(
             Modifier
@@ -146,7 +146,6 @@ fun EditLessonProfileScreen() {
                 }
 
             }
-
             EditProfileTitle(modifier = Modifier, title = "수업 소개", true)
             EditText(defaultText = "레슨에 대한 부가적인 설명을 적어주세요")
 
@@ -161,107 +160,9 @@ fun EditLessonProfileScreen() {
             CategoryTitle(modifier = Modifier, title = "커리큘럼 소개")
 
             DefaultButton(text = "커리큘럼 추가하기")
-
-
         }
-
-
     }
 }
-
-@Composable
-fun CategoryTitle(modifier: Modifier, title: String) {
-    Row() {
-        Text(
-            modifier = Modifier.padding(bottom = 8.dp),
-            text = title,
-            fontFamily = pretendardFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-    }
-
-}
-
-@Composable
-fun descriptionText(modifier: Modifier, text: String) {
-    Text(
-        text = text,
-        fontFamily = pretendardFontFamily,
-        fontSize = 10.sp,
-        color = Main
-    )
-}
-
-
-@Composable
-fun LessonPhoto(onImageSelected: (Uri?) -> Unit) {
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-        onImageSelected(uri)
-    }
-
-    Column(
-        modifier = Modifier
-            .wrapContentSize()
-    ) {
-        // 프로필 사진 영역
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .background(Grey)
-                .clickable { launcher.launch("image/*") } // 갤러리 호출
-        ) {
-            selectedImageUri?.let { uri ->
-                // 선택된 이미지 표시
-                Image(
-                    painter = rememberAsyncImagePainter(uri),
-                    contentDescription = "Selected Profile Picture",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            } ?: run {
-                // 기본 이미지 또는 빈 상태 표시
-                Icon(
-                    imageVector = Icons.Default.Create,
-                    contentDescription = "Default Profile Picture",
-                    modifier = Modifier.align(Alignment.Center),
-                    tint = White
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-fun CheckBoxText(text: String) {
-    var checked by remember { mutableStateOf(false) }
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { checked = it },
-            colors = CheckboxDefaults.colors(
-                checkedColor = Main,
-                uncheckedColor = Grey,
-                checkmarkColor = White
-            ),
-            modifier = Modifier.size(30.dp)
-        )
-
-        Text(text = text, fontSize = 12.sp)
-    }
-}
-
-val timeList = (0..23).map { it.toString().padStart(2, '0') }
 
 
 @Composable
@@ -331,90 +232,6 @@ fun SetSchedule() {
             imageVector = Icons.Default.AddCircle,
             contentDescription = null,
             tint = Main
-        )
-    }
-}
-
-
-@Composable
-fun BorderedLazyColumn(
-    optionList: List<String>,
-    selectedOption: String,
-    width: Dp = 100.dp,
-    onDaySelected: (String) -> Unit,
-    borderWidth: Dp = 1.dp
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .width(width)
-            .height(64.dp)
-            .padding(vertical = 8.dp, horizontal = 2.dp) // 외부 여백
-            .drawBehind {
-                val strokeWidth = borderWidth.toPx()
-                val yTop = 0f + strokeWidth / 2
-                val yBottom = size.height - strokeWidth / 2
-
-                // 위 테두리
-                drawLine(
-                    color = UmpaColor.Grey,
-                    start = Offset(0f, yTop),
-                    end = Offset(size.width, yTop),
-                    strokeWidth = strokeWidth
-                )
-                // 아래 테두리
-                drawLine(
-                    color = UmpaColor.Grey,
-                    start = Offset(0f, yBottom),
-                    end = Offset(size.width, yBottom),
-                    strokeWidth = strokeWidth
-                )
-            }
-            .padding(0.dp) // 내부 여백
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .padding(10.dp), // LazyColumn 내부 여백
-        ) {
-            items(optionList) { option ->
-                val isSelected = option == selectedOption
-                Text(
-                    text = option,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = TextStyle(
-                        color = UmpaColor.Grey,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .background(UmpaColor.White)
-                        .clickable { onDaySelected(option) }
-                        .align(Alignment.Center)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun AddPhoto(){
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(240.dp)
-            .border(1.dp, UmpaColor.Main, RoundedCornerShape(5.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = Icons.Default.PhotoCamera,
-            contentDescription = null,
-            tint = UmpaColor.Grey
         )
     }
 }

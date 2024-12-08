@@ -50,13 +50,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaColor.Companion.Grey
 import com.pob.umpa.ui.theme.UmpaColor.Companion.Main
 import com.pob.umpa.ui.theme.UmpaColor.Companion.White
 import com.pob.umpa.ui.theme.pretendardFontFamily
+import kotlin.math.exp
 
 val subjectList = listOf("보컬", "피아노", "작곡", "기타", "드럼", "베이스", "관악", "전자 음악", "화성학")
 val locationList = listOf("서울/대전/대구/부산/광주/경기도")
@@ -122,138 +125,6 @@ fun EditProfileScreen() {
 
 
 
-    }
-}
-
-@Composable
-fun EditProfileTitle(modifier: Modifier, title: String, isRequired: Boolean) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = title,
-            fontFamily = pretendardFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )
-        if(isRequired){
-            Spacer(modifier.size(8.dp))
-            Text(
-                text = "필수",
-                fontFamily = pretendardFontFamily,
-                fontSize = 10.sp,
-                color = Main)
-        }
-        Spacer(modifier.size(8.dp))
-        Icon(
-            modifier = Modifier.size(18.dp),
-            imageVector = Icons.Default.Info,
-            contentDescription = null,
-            tint = Main
-        )
-    }
-
-}
-
-@Composable
-fun ProfilePhoto(onImageSelected: (Uri?) -> Unit) {
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-        onImageSelected(uri)
-    }
-
-    Column(
-        modifier = Modifier
-            .wrapContentSize()
-    ) {
-        // 프로필 사진 영역
-        Box(
-            modifier = Modifier
-                .size(180.dp)
-                .clip(shape = RoundedCornerShape(5.dp))
-                .background(Grey)
-                .clickable { launcher.launch("image/*") } // 갤러리 호출
-        ) {
-            selectedImageUri?.let { uri ->
-                // 선택된 이미지 표시
-                Image(
-                    painter = rememberAsyncImagePainter(uri),
-                    contentDescription = "Selected Profile Picture",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            } ?: run {
-                // 기본 이미지 또는 빈 상태 표시
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Default Profile Picture",
-                    modifier = Modifier.align(Alignment.Center),
-                    tint = White
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-fun SpinnerWithButton(optionList: List<String>,defaultText : String) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(defaultText) }
-
-    Column(
-        modifier = Modifier
-            .wrapContentWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        OutlinedButton(onClick = { expanded = true }, modifier = Modifier.width(120.dp)) {
-            Row {
-                Text(selectedOption, color = Grey)
-                Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = Grey)
-            }
-        }
-    }
-
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-        optionList.forEach { option ->
-            DropdownMenuItem(
-                onClick = {
-                    selectedOption = option
-                    expanded = false
-                }
-            ) {
-                Text(option)
-            }
-        }
-    }
-}
-
-@Composable
-fun EditText(defaultText: String){
-    var value by remember { mutableStateOf(defaultText) }
-    TextField(
-        value = value,
-        onValueChange = {value = it},
-        textStyle = TextStyle(color = Grey),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .border(width = 1.dp, color = Main, shape = RoundedCornerShape(5.dp))
-         , colors = TextFieldDefaults.outlinedTextFieldColors(
-             backgroundColor = White
-         )
-    )
-}
-
-@Composable
-fun DefaultButton(text : String){
-    Button(onClick = { /*TODO*/ }, modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp), colors = ButtonDefaults.buttonColors(Main) , shape = RoundedCornerShape(5.dp)) {
-        Text(text = text)
     }
 }
 
