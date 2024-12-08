@@ -175,6 +175,7 @@ fun QuestionBox(comments: List<QuestionCommentModel>?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .padding(horizontal = 16.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(16.dp)
