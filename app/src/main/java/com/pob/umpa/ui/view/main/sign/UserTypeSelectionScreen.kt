@@ -115,59 +115,19 @@ fun UserTypeSelectionScreen(
                     .weight(1f)
                     .padding(horizontal = 30.dp)
             ) {
-                Button(
-                    onClick = {
-                        if (userType != UserType.STUDENT) viewModel.setUserType(UserType.STUDENT)
-                    },
-                    shape = RoundedCornerShape(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (userType == UserType.STUDENT) UmpaColor.White else UmpaColor.Main,
-                        contentColor = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White
-                    ),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(50.dp)
-                        .border(
-                            width = 1.dp,
-                            color = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White,
-                            RoundedCornerShape(3.dp)
-                        )
-                ) {
-                    Text(
-                        text = "학생 회원",
-                        fontFamily = pretendardFontFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp
-                    )
-                }
 
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Button(
-                    onClick = {
-                        if (userType != UserType.TEACHER) viewModel.setUserType(UserType.TEACHER)
-                    },
-                    shape = RoundedCornerShape(3.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(50.dp)
-                        .border(
-                            width = 1.dp,
-                            color = if (userType != UserType.TEACHER) UmpaColor.White else UmpaColor.Main,
-                            RoundedCornerShape(3.dp)
-                        ),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (userType != UserType.TEACHER) UmpaColor.Main else UmpaColor.White,
-                        contentColor = if (userType != UserType.TEACHER) UmpaColor.White else UmpaColor.Main
-                    ),
-                ) {
-                    Text(
-                        text = "선생님 회원",
-                        fontFamily = pretendardFontFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp
-                    )
-                }
+                UserTypeButton(
+                    modifier = Modifier.weight(1f),
+                    viewModel = viewModel,
+                    userType = UserType.STUDENT,
+                    selectedType = userType
+                )
+                UserTypeButton(
+                    modifier = Modifier.weight(1f),
+                    viewModel = viewModel,
+                    userType = UserType.TEACHER,
+                    selectedType = userType
+                )
 
             }
 
@@ -198,26 +158,29 @@ fun UserTypeSelectionScreen(
 }
 
 @Composable
-fun UserTypeButton(modifier: Modifier = Modifier, viewModel: SignViewModel, userType: UserType) {
+fun UserTypeButton(
+    modifier: Modifier = Modifier,
+    viewModel: SignViewModel,
+    userType: UserType,
+    selectedType: UserType
+) {
     Button(
-        onClick = {
-            if (userType != UserType.STUDENT) viewModel.setUserType(UserType.STUDENT)
-        },
+        onClick = { if (userType != selectedType) viewModel.setUserType(userType) },
         shape = RoundedCornerShape(3.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (userType == UserType.STUDENT) UmpaColor.White else UmpaColor.Main,
-            contentColor = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White
+            containerColor = if (userType == selectedType) UmpaColor.White else UmpaColor.Main,
+            contentColor = if (userType == selectedType) UmpaColor.Main else UmpaColor.White
         ),
-        modifier = Modifier
+        modifier = modifier
             .height(50.dp)
             .border(
                 width = 1.dp,
-                color = if (userType == UserType.STUDENT) UmpaColor.Main else UmpaColor.White,
+                color = if (userType == selectedType) UmpaColor.Main else UmpaColor.White,
                 RoundedCornerShape(3.dp)
             )
     ) {
         Text(
-            text = "학생 회원",
+            text = if (userType == UserType.STUDENT) "학생 회원" else "선생님 회원",
             fontFamily = pretendardFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
