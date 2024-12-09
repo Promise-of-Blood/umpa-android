@@ -4,6 +4,8 @@ import android.icu.text.DecimalFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * 1000원 단위로 (,)를 찍어주는 함수
@@ -44,3 +46,16 @@ fun LocalDateTime.toDiffString(): String {
 * ex) https://www.youtube.com/watch?v=3DeTW8FKKYg -> 3DeTW8FKKYg
 * */
 fun String.parseVideoLink() = this.split("v=")[1].split("&")[0]
+
+/**
+ * 리소스 이름을 리소스 ID로 변환하는 함수
+ * 예:
+ * val drawableName = "R.drawable.hingkku"
+ * val drawableId = getDrawableId(drawableName)
+ * Image(painter = painterResource(id = drawableId),
+ */
+@Composable
+fun getDrawableId(resourceName: String): Int {
+    val context = LocalContext.current
+    return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
+}
