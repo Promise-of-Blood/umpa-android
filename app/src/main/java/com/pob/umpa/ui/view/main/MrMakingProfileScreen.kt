@@ -58,11 +58,11 @@ fun MrMakingProfileScreen() {
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp), thickness = 0.5.dp)
 
-            CategoryTitle(modifier = Modifier, title = "서비스 정보" )
+            CategoryTitle(modifier = Modifier, title = "서비스 정보")
 
             ProductionGuide()
 
-            val programList = listOf("로직","큐베이스","에이블톤","그 외")
+            val programList = listOf("로직", "큐베이스", "에이블톤", "그 외")
             UsingProgram(programList = programList)
 
             ServiceIntroduce()
@@ -72,9 +72,6 @@ fun MrMakingProfileScreen() {
             CategoryTitle(modifier = Modifier, title = "샘플 등록")
 
             SampleVideoUpload()
-
-            
-
 
 
         }
@@ -119,7 +116,7 @@ fun MRMakingCost() {
 }
 
 @Composable
-fun SampleVideoUpload(){
+fun SampleVideoUpload() {
 
     val linkStates = remember {
         mutableStateListOf<Int>()
@@ -131,10 +128,10 @@ fun SampleVideoUpload(){
 
     Column {
 
-        EditProfileTitle(modifier = Modifier, title = "샘플 음원 등록" , isRequired = false)
+        EditProfileTitle(modifier = Modifier, title = "샘플 음원 등록", isRequired = false)
         Spacer(modifier = Modifier.size(12.dp))
 
-        linkStates.forEach{ _ ->
+        linkStates.forEach { _ ->
             EditText(defaultText = "유튜브 링크를 입력해주세요")
             Spacer(modifier = Modifier.size(8.dp))
         }
@@ -147,7 +144,7 @@ fun SampleVideoUpload(){
                 onClick = {
                     linkStates.add(linkStates.size)
                 }
-            ){
+            ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.Default.AddCircle,
