@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,7 +14,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,14 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.theme.pretendardFontFamily
-import com.pob.umpa.ui.view.main.chatting.ChattingScaffoldScreen
-import com.pob.umpa.ui.view.main.home.calendar.CalendarSchoolScreen
 import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 
 class MainActivity : ComponentActivity() {
@@ -46,18 +46,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navController = rememberNavController()
-            var scaffoldState by remember { mutableStateOf( ScaffoldType.Main ) }
-            val onScaffoldChange = { scaffoldType : ScaffoldType ->
-                scaffoldState = scaffoldType
-            }
+            val scaffoldNavController = rememberNavController()
             UmpaTheme {
-                val backStackEntry = navController.currentBackStackEntryAsState()
-                when(scaffoldState) {
-                    ScaffoldType.Main -> MainScaffold(backStackEntry = backStackEntry, navController = navController, onScaffoldChange = onScaffoldChange)
-                    ScaffoldType.CalendarSchool -> CalendarSchoolScreen(onScaffoldChange = onScaffoldChange)
-                    ScaffoldType.Chatting -> ChattingScaffoldScreen(onScaffoldChange = onScaffoldChange)
-                }
+                ScaffoldNavigation(scaffoldNavController = scaffoldNavController)
             }
         }
     }
@@ -65,10 +56,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScaffold(
-    backStackEntry: androidx.compose.runtime.State<androidx.navigation.NavBackStackEntry?>,
-    navController: androidx.navigation.NavHostController,
-    onScaffoldChange: (ScaffoldType) -> Unit
+    mainNavController: NavHostController,
+    scaffoldNavController: NavHostController
 ) {
+    val backStackEntry = mainNavController.currentBackStackEntryAsState()
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -84,7 +75,7 @@ fun MainScaffold(
                         elevation = 0.dp,
                         actions = {
                             IconButton(onClick = { }) {
-                                Icon(painter = painterResource(id = R.drawable.baseline_school_24), contentDescription = null)
+                                Icon(painter = painterResource(id = R.drawable.baseline_school_24), contentDescription = null, modifier = Modifier.clickable { scaffoldNavController.navigate("calendarSchool") })
                             }
                         }
                     )
@@ -109,7 +100,7 @@ fun MainScaffold(
                 MainItemList.forEach { item ->
                     BottomNavigationItem(
                         selected = item.route == backStackEntry.value?.destination?.route,
-                        onClick = { navController.navigate(item.route) },
+                        onClick = { mainNavController.navigate(item.route) },
                         label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
                         icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
                         selectedContentColor = Black,
@@ -120,7 +111,7 @@ fun MainScaffold(
         }
     ) { innerPadding ->
         MainNavigation(
-            navController = navController,
+            mainNavController = mainNavController,
             modifier = Modifier
                 .fillMaxSize()
                 .background(UmpaColor.White)
@@ -129,7 +120,7 @@ fun MainScaffold(
                     horizontal = 24.dp,
                     vertical = 12.dp
                 ),
-            onScaffoldChange = onScaffoldChange
+            scaffoldNavController = scaffoldNavController,
         )
     }
 }

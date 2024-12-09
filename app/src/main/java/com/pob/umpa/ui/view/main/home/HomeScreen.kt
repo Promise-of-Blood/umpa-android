@@ -1,13 +1,10 @@
 package com.pob.umpa.ui.view.main.home
 
-import android.graphics.Paint.Align
 import android.util.Log
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,27 +15,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,15 +39,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
-import com.pob.umpa.ui.view.main.ScaffoldType
+import com.pob.umpa.ui.view.main.ScaffoldNavItem
+import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(modifier: Modifier, onScaffoldChange: (ScaffoldType) -> Unit) {
+fun HomeScreen(modifier: Modifier, scaffoldNavController : NavHostController, mainNavController: NavHostController) {
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -71,17 +61,17 @@ fun HomeScreen(modifier: Modifier, onScaffoldChange: (ScaffoldType) -> Unit) {
         ) {
             item {
                 HomeItemTitle(modifier = Modifier, title = "선생님 찾기")
-                HomeFindTeacher(modifier = Modifier)
+                HomeFindTeacher(modifier = Modifier, mainNavController = mainNavController)
                 Spacer(modifier = Modifier.padding(16.dp))
                 HomeBanner()
                 Spacer(modifier = Modifier.padding(16.dp))
                 HomeItemTitle(modifier = Modifier, title = "음파 커뮤니티")
                 Spacer(modifier = Modifier.padding(6.dp))
-                HomeCommunityShortcut(modifier)
+                HomeCommunityShortcut(modifier = modifier, mainNavController = mainNavController)
                 Spacer(modifier = Modifier.padding(16.dp))
                 HomeItemTitle(modifier = Modifier, title = "입시 캘린더")
                 Spacer(modifier = Modifier.padding(6.dp))
-                HomeCalendar(onScaffoldChange)
+                HomeCalendar(mainNavController)
                 Spacer(modifier = Modifier.padding(16.dp))
             }
         }
@@ -101,7 +91,7 @@ fun HomeItemTitle(modifier: Modifier, title: String) {
 }
 
 @Composable
-fun HomeFindTeacher(modifier: Modifier) {
+fun HomeFindTeacher(modifier: Modifier, mainNavController: NavHostController) {
     val pagerState = rememberPagerState(pageCount = {2})
     HorizontalPager(state = pagerState) { page ->
         Column(modifier = modifier) {
@@ -115,7 +105,8 @@ fun HomeFindTeacher(modifier: Modifier) {
                         HomeFindTeacherItem(
                             item =
                             if (TeacherSubjectList.size > (i * 5 + j) + page * 10) TeacherSubjectList[(i * 5 + j) + page * 10]
-                            else EmptyTeacherSubject
+                            else EmptyTeacherSubject,
+                            mainNavController = mainNavController
                         )
                     }
                 }
@@ -125,7 +116,7 @@ fun HomeFindTeacher(modifier: Modifier) {
 }
 
 @Composable
-fun HomeFindTeacherItem(item : TeacherSubject) {
+fun HomeFindTeacherItem(item : TeacherSubject, mainNavController: NavHostController) {
     if(item.type == "empty") {
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -140,7 +131,7 @@ fun HomeFindTeacherItem(item : TeacherSubject) {
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(vertical = 10.dp)
+            modifier = Modifier.padding(vertical = 10.dp).clickable { mainNavController.navigate("matching") }
         ) {
             Card(
                 modifier = Modifier
@@ -228,7 +219,7 @@ fun HomeBannerPage(modifier: Modifier, text: String) {
 }
 
 @Composable
-fun HomeCommunityShortcut(modifier: Modifier) {
+fun HomeCommunityShortcut(modifier: Modifier, mainNavController: NavHostController) {
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -239,15 +230,16 @@ fun HomeCommunityShortcut(modifier: Modifier) {
             .fillMaxWidth()
     ) {
         CommunityShortcutItemList.forEach {
-            HomeCommunityShortcutItem(it)
+            HomeCommunityShortcutItem(it , mainNavController)
         }
     }
 }
 
 @Composable
-fun HomeCommunityShortcutItem(item: CommunityShortcutItem) {
+fun HomeCommunityShortcutItem(item: CommunityShortcutItem, mainNavController: NavHostController) {
     Column (
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { mainNavController.navigate("community") }
     ) {
         Image(painter = painterResource(id = item.image), contentDescription = item.name, modifier = Modifier.size(40.dp))
         Text(text = item.name, textAlign = TextAlign.Center, fontSize = 12.sp)
@@ -256,7 +248,7 @@ fun HomeCommunityShortcutItem(item: CommunityShortcutItem) {
 
 //
 @Composable
-fun HomeCalendar(onScaffoldChange: (ScaffoldType) -> Unit) {
+fun HomeCalendar(navController : NavHostController) {
     Log.d("달력 날짜 표시", "${getNowMonth()}, ${getFirstDay()}, ${getLastDay()}")
     // 30 * 6 (박스) + 2 * 5 (선) + 10(패딩)
     Box (
@@ -267,7 +259,7 @@ fun HomeCalendar(onScaffoldChange: (ScaffoldType) -> Unit) {
             .clip(RoundedCornerShape(10.dp))
             .border(2.dp, UmpaColor.LightGray, shape = RoundedCornerShape(10.dp))
             .background(UmpaColor.LightGray)
-            .clickable { onScaffoldChange(ScaffoldType.CalendarSchool) }
+            .clickable { navController.navigate("calendar") }
         ,
         contentAlignment = Alignment.Center
     ) {

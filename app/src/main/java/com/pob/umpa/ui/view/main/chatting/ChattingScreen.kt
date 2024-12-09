@@ -2,6 +2,7 @@ package com.pob.umpa.ui.view.main.chatting
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,14 +33,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
-import com.pob.umpa.ui.view.main.ScaffoldType
+import com.pob.umpa.ui.view.main.ScaffoldNavItem
+import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 
 @Composable
 fun ChattingScaffoldScreen(
-    onScaffoldChange: (ScaffoldType) -> Unit
+    navController: NavHostController
 ) {
     Scaffold (
         modifier = Modifier
@@ -81,6 +85,7 @@ fun ChattingScaffoldScreen(
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
+                        .clickable { navController.popBackStack() }
                 ) }
             )
         }

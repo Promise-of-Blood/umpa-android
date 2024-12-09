@@ -12,8 +12,8 @@ val MainItemList = listOf(
     MainNavItem(
         topTitle = "매칭서비스",
         name = "매칭서비스",
-//        route = "contact",
-        route = "calendar",
+        route = "matching",
+//        route = "calendar",
         icon = R.drawable.baseline_matching_24
     ),
     MainNavItem(

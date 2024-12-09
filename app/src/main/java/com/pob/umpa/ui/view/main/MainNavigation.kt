@@ -11,19 +11,18 @@ import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 
 @Composable
 fun MainNavigation(
-    navController : NavHostController,
+    mainNavController : NavHostController,
     modifier: Modifier,
-    onScaffoldChange: (ScaffoldType) -> Unit
+    scaffoldNavController : NavHostController,
 ) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = mainNavController, startDestination = "home") {
         composable("home") {
             // 홈 부분 스크린
-            HomeScreen(modifier, onScaffoldChange)
+            HomeScreen(modifier, scaffoldNavController, mainNavController)
         }
-        composable("calendar") {
+        composable("matching") {
             // 매칭 서비스 부분 스크린
-//            Greeting(name = "매칭 서비스")
-            CalendarScreen(modifier)
+            Greeting(name = "매칭 서비스")
         }
         composable("community") {
             // 커뮤니티 부분 스크린
@@ -31,15 +30,15 @@ fun MainNavigation(
         }
         composable("chatting") {
             // 채팅 부분 스크린
-            ChatListScreen(modifier)
+            ChatListScreen(modifier, scaffoldNavController)
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
             Greeting(name = "내 정보")
         }
-//        composable("calendar") {
-//            // 캘린더 부분 스크린
-//            CalendarScreen(modifier)
-//        }
+        composable("calendar") {
+            // 매칭 서비스 부분 스크린
+            CalendarScreen(modifier)
+        }
     }
 }

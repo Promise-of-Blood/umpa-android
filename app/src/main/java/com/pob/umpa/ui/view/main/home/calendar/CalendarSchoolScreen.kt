@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material.Icon
@@ -31,14 +29,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.pretendardFontFamily
-import com.pob.umpa.ui.view.main.ScaffoldType
+import com.pob.umpa.ui.view.main.ScaffoldNavItem
+import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 
 @Composable
 fun CalendarSchoolScreen(
-    onScaffoldChange: (ScaffoldType) -> Unit
+    navController: NavHostController
 ) {
     Scaffold(
         modifier = Modifier

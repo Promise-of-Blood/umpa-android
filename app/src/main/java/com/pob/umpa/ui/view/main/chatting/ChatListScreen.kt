@@ -28,11 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor
 
 @Composable
-fun ChatListScreen(modifier: Modifier) {
+fun ChatListScreen(modifier: Modifier, scaffoldNavController : NavHostController,) {
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -44,16 +45,16 @@ fun ChatListScreen(modifier: Modifier) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items (2) {
-                ChatListItem()
+                ChatListItem(scaffoldNavController)
             }
         }
     }
 }
 
 @Composable
-fun ChatListItem() {
+fun ChatListItem(scaffoldNavController : NavHostController,) {
     Column (
-        Modifier.clickable {  }
+        Modifier.clickable { scaffoldNavController.navigate("chatting") }
     ) {
         Row (
             horizontalArrangement = Arrangement.Center,
