@@ -1,6 +1,5 @@
 package com.pob.umpa.domain
 
-import android.media.Image
 import java.time.LocalDate
 
 class AcceptDetail(
