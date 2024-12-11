@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pob.umpa.R
+import com.pob.umpa.common.InstrumentsTypeList
+import com.pob.umpa.common.lessonTypeList
 import com.pob.umpa.domain.MatchingModel
 import com.pob.umpa.domain.MockLessonData
 import com.pob.umpa.ui.theme.Typography
