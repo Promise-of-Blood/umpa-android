@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pob.umpa.ui.view.main.community.CommunityScreen
+import com.pob.umpa.ui.view.main.community.Question.detail.QuestionDetailScreen
 import com.pob.umpa.ui.view.main.home.HomeScreen
 import com.pob.umpa.ui.view.main.matching.MatchingScreen
 import com.pob.umpa.ui.view.main.matching.detail.MatchingDetailScreen
@@ -33,6 +34,10 @@ fun MainNavigation(
         composable("community") {
             // 커뮤니티 부분 스크린
             CommunityScreen()
+        }
+        composable("community/question/detail") {
+            // 커뮤니티 부분 스크린
+            QuestionDetailScreen(modifier = modifier)
         }
         composable("chatting") {
             // 채팅 부분 스크린
