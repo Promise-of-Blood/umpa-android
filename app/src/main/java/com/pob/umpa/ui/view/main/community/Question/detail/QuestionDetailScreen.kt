@@ -20,11 +20,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +43,7 @@ import com.pob.umpa.domain.QuestionCommentModel
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
+import com.pob.umpa.ui.view.main.CheckBoxText
 
 @Composable
 fun QuestionDetailScreen(modifier: Modifier = Modifier) {
@@ -49,7 +55,7 @@ fun QuestionDetailScreen(modifier: Modifier = Modifier) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
@@ -73,13 +79,34 @@ fun QuestionDetailScreen(modifier: Modifier = Modifier) {
             commentList(MockCommentsData.mockCommentsData)
         }
 
-        QuestionCommentInput()
+
+        QuestionCommentInput(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp) // 높이 지정
+                .background(color = UmpaColor.White)
+        )
     }
 }
 
 @Composable
-fun QuestionCommentInput() {
-    TODO("Not yet implemented")
+fun QuestionCommentInput(modifier: Modifier) {
+    Row(modifier = modifier) {
+        AnonymousCheckBox(modifier = Modifier)
+    }
+}
+
+@Composable
+fun AnonymousCheckBox(modifier: Modifier = Modifier) {
+    var isChecked by remember { mutableStateOf(false) }
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = { isChecked = it }
+        )
+        Text("익명", style = Typography.bodySmall, color = UmpaColor.Black)
+    }
 }
 
 @Composable
