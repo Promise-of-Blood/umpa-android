@@ -15,37 +15,37 @@ object MockMentoringDetailData {
         mentorInstrumentsType = "작곡",
         createdAt = LocalDateTime.now(),
         commentList = listOf(
-            Comment(
+            DetailComment(
                 commentId = "comment001",
                 username = "유저 이름",
                 content = "댓글 내용",
                 createdAt = LocalDateTime.now().minusMinutes(45)
             ),
-            Comment(
+            DetailComment(
                 commentId = "comment002",
                 username = "유저 이름",
                 content = "댓글 내용",
                 createdAt = LocalDateTime.now().minusHours(5)
             ),
-            Comment(
+            DetailComment(
                 commentId = "comment003",
                 username = "유저 이름",
                 content = "댓글 내용",
                 createdAt = LocalDateTime.now().minusDays(3)
             ),
-            Comment(
+            DetailComment(
                 commentId = "comment004",
                 username = "유저 이름",
                 content = "댓글 내용",
                 createdAt = LocalDateTime.now().minusWeeks(2)
             ),
-            Comment(
+            DetailComment(
                 commentId = "comment005",
                 username = "유저 이름",
                 content = "댓글 내용",
                 createdAt = LocalDateTime.now().minusMonths(6)
             ),
-            Comment(
+            DetailComment(
                 commentId = "comment006",
                 username = "유저 이름",
                 content = "댓글 내용",
