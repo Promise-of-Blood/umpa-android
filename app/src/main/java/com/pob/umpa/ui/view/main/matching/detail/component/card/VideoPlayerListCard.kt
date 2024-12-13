@@ -7,12 +7,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import com.pob.umpa.util.parseVideoLink
 
 @Composable
 fun VideoPlayerListCard(videoList: List<String>, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
         videoList.forEachIndexed { index, video ->
-            YoutubePlayer(videoId = video.split("=")[1], modifier = Modifier)
+            YoutubePlayer(videoId = video.parseVideoLink(), modifier = Modifier)
         }
     }
 }
@@ -28,6 +29,7 @@ fun YoutubePlayer(
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
                         youTubePlayer.loadVideo(videoId, 0f)
+                        youTubePlayer.pause()
                     }
                 })
             }

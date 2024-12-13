@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
                     MainNavigation(
                         navController = navController,
                         modifier = Modifier
+                            .background(UmpaColor.White)
                             .padding(innerPadding)
                             .padding(
                                 horizontal = 24.dp, vertical = 12.dp
