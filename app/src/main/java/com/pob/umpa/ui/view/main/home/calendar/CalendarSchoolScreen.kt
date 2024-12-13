@@ -39,10 +39,11 @@ import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 
 @Composable
 fun CalendarSchoolScreen(
-    navController: NavHostController
+    modifier: Modifier = Modifier,
+    scaffoldNavController: NavHostController
 ) {
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .safeDrawingPadding(),
         topBar = {
@@ -77,7 +78,7 @@ fun CalendarSchoolScreen(
 }
 
 @Composable
-fun SchoolItem(modifier: Modifier, isClosed: Boolean) {
+fun SchoolItem(modifier: Modifier = Modifier, isClosed: Boolean) {
     Row (
         modifier = modifier
             .fillMaxWidth()
@@ -92,49 +93,47 @@ fun SchoolItem(modifier: Modifier, isClosed: Boolean) {
 }
 
 @Composable
-fun SchoolClosedItem(modifier: Modifier) {
+fun SchoolClosedItem(modifier: Modifier = Modifier,) {
     SchoolItem(modifier = modifier, isClosed = true)
 }
 
 @Composable
-fun SchoolOpenItem(modifier: Modifier) {
+fun SchoolOpenItem(modifier: Modifier = Modifier,) {
     Column {
         SchoolItem(modifier = modifier, isClosed = false)
-        SchoolTypeButtonItem()
+        SchoolTypeButtonGroup()
         Spacer(modifier = Modifier.padding(4.dp))
         SchoolCheckBox()
     }
 }
 
 @Composable
-fun SchoolTypeButtonItem() {
+fun SchoolTypeButtonGroup(modifier: Modifier = Modifier,) {
     Row(
-        modifier = Modifier.padding(horizontal = 24.dp)
+        modifier = modifier.padding(horizontal = 24.dp)
     ) {
-        Box (
-            modifier = Modifier
-                .background(UmpaColor.LightGray, shape = RoundedCornerShape(32.dp))
-                .clip(RoundedCornerShape(32.dp))
-                .padding(horizontal = 20.dp, vertical = 4.dp)
-        ) {
-            Text(text = "수시")
-        }
+        SchoolTypeButton(typeText = "수시")
         Spacer(modifier = Modifier.padding(4.dp))
-        Box (
-            modifier = Modifier
-                .background(UmpaColor.LightBlue, shape = RoundedCornerShape(32.dp))
-                .clip(RoundedCornerShape(32.dp))
-                .padding(horizontal = 20.dp, vertical = 4.dp)
-        ) {
-            Text(text = "정시")
-        }
+        SchoolTypeButton(typeText = "정시")
     }
 }
 
 @Composable
-fun SchoolCheckBox() {
+fun SchoolTypeButton(modifier: Modifier = Modifier, typeText: String) {
+    Box (
+        modifier = Modifier
+            .background(UmpaColor.LightGray, shape = RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(32.dp))
+            .padding(horizontal = 20.dp, vertical = 4.dp)
+    ) {
+        Text(text = typeText)
+    }
+}
+
+@Composable
+fun SchoolCheckBox(modifier: Modifier = Modifier,) {
     Row (
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Row (
@@ -154,15 +153,15 @@ fun SchoolCheckBox() {
 }
 
 @Composable
-fun SchoolDivider() {
-    Spacer(modifier = Modifier
+fun SchoolDivider(modifier: Modifier = Modifier,) {
+    Spacer(modifier = modifier
         .fillMaxWidth()
         .height(2.dp)
         .background(UmpaColor.LightGray))
 }
 
 @Composable
-fun AddSchoolButton(modifier: Modifier) {
+fun AddSchoolButton(modifier: Modifier = Modifier,) {
     Icon(
         painter = painterResource(id = R.drawable.baseline_add_circle_24),
         contentDescription = null,
@@ -172,7 +171,7 @@ fun AddSchoolButton(modifier: Modifier) {
 }
 
 @Composable
-fun SaveSchoolButton(modifier: Modifier) {
+fun SaveSchoolButton(modifier: Modifier = Modifier,) {
     Button(
         onClick = {},
         modifier = modifier

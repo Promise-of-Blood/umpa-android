@@ -1,6 +1,7 @@
 package com.pob.umpa.ui.view.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import com.pob.umpa.ui.view.main.home.calendar.CalendarSchoolScreen
 
 @Composable
 fun ScaffoldNavigation(
+    modifier: Modifier = Modifier,
     scaffoldNavController : NavHostController,
 ) {
     val mainNavController = rememberNavController()
@@ -20,10 +22,10 @@ fun ScaffoldNavigation(
             MainScaffold(mainNavController = mainNavController, scaffoldNavController = scaffoldNavController)
         }
         composable ("calendarSchool") {
-            CalendarSchoolScreen(scaffoldNavController)
+            CalendarSchoolScreen(scaffoldNavController = scaffoldNavController)
         }
         composable ("chatting") {
-            ChattingScaffoldScreen(scaffoldNavController)
+            ChattingScaffoldScreen(scaffoldNavController = scaffoldNavController)
         }
     }
 }

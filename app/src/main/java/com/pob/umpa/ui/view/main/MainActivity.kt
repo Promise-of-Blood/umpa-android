@@ -56,38 +56,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScaffold(
+    modifier: Modifier = Modifier,
     mainNavController: NavHostController,
     scaffoldNavController: NavHostController
 ) {
     val backStackEntry = mainNavController.currentBackStackEntryAsState()
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .safeDrawingPadding(),
         topBar = {
             MainItemList.forEach { item ->
                 if(backStackEntry.value?.destination?.route == "calendar") {
-                    TopAppBar(
-                        title = { Text(text = "입시 캘린더", fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
-                        backgroundColor = UmpaColor.White,
-                        contentColor = UmpaColor.Black,
-                        modifier = Modifier.height(60.dp),
-                        elevation = 0.dp,
-                        actions = {
-                            IconButton(onClick = { }) {
-                                Icon(painter = painterResource(id = R.drawable.baseline_school_24), contentDescription = null, modifier = Modifier.clickable { scaffoldNavController.navigate("calendarSchool") })
-                            }
-                        }
-                    )
+                    CalendarTopAppBar(scaffoldNavController = scaffoldNavController)
                 }
                 else if(item.route == backStackEntry.value?.destination?.route) {
-                    TopAppBar(
-                        title = { Text(text = item.topTitle, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Black, fontSize = 24.sp, modifier = Modifier.padding(horizontal = 12.dp)) },
-                        backgroundColor = UmpaColor.White,
-                        contentColor = UmpaColor.Black,
-                        modifier = Modifier.height(60.dp),
-                        elevation = 0.dp
-                    )
+                    MainNavTopAppBar(item = item)
                 }
             }
         },
@@ -126,8 +110,45 @@ fun MainScaffold(
 }
 
 @Composable
-fun NoBottomBarScaffold() {
+fun CalendarTopAppBar(modifier: Modifier = Modifier, scaffoldNavController: NavHostController) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "입시 캘린더",
+                fontFamily = pretendardFontFamily,
+                fontWeight = FontWeight.Black,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ) },
+        backgroundColor = UmpaColor.White,
+        contentColor = UmpaColor.Black,
+        modifier = Modifier.height(60.dp),
+        elevation = 0.dp,
+        actions = {
+            IconButton(onClick = { }) {
+                Icon(painter = painterResource(id = R.drawable.baseline_school_24), contentDescription = null, modifier = Modifier.clickable { scaffoldNavController.navigate("calendarSchool") })
+            }
+        }
+    )
+}
 
+@Composable
+fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem) {
+    TopAppBar(
+        title = {
+            Text(
+                text = item.topTitle,
+                fontFamily = pretendardFontFamily,
+                fontWeight = FontWeight.Black,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(horizontal = 12.dp
+                )
+            ) },
+        backgroundColor = UmpaColor.White,
+        contentColor = UmpaColor.Black,
+        modifier = Modifier.height(60.dp),
+        elevation = 0.dp
+    )
 }
 
 @Composable

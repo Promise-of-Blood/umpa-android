@@ -43,10 +43,11 @@ import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 
 @Composable
 fun ChattingScaffoldScreen(
-    navController: NavHostController
+    modifier: Modifier = Modifier,
+    scaffoldNavController: NavHostController
 ) {
     Scaffold (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .safeDrawingPadding(),
         topBar = {
@@ -85,7 +86,7 @@ fun ChattingScaffoldScreen(
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
-                        .clickable { navController.popBackStack() }
+                        .clickable { scaffoldNavController.popBackStack() }
                 ) }
             )
         }
@@ -99,7 +100,7 @@ fun ChattingScaffoldScreen(
 }
 
 @Composable
-fun ChattingScreen(modifier: Modifier) {
+fun ChattingScreen(modifier: Modifier = Modifier,) {
     Box(
         modifier = modifier
     ) {
@@ -136,7 +137,7 @@ fun ChattingScreen(modifier: Modifier) {
 }
 
 @Composable
-fun DateDivider(modifier: Modifier) {
+fun DateDivider(modifier: Modifier = Modifier,) {
     Text(
         text = "2024년 11월 9일 토요일",
         modifier = modifier,
@@ -147,7 +148,7 @@ fun DateDivider(modifier: Modifier) {
 }
 
 @Composable
-fun MyChattingItem(text: String, time: String, modifier: Modifier) {
+fun MyChattingItem(modifier: Modifier = Modifier, text: String, time: String) {
     Row (
         modifier,
         horizontalArrangement = Arrangement.End
@@ -159,7 +160,7 @@ fun MyChattingItem(text: String, time: String, modifier: Modifier) {
 }
 
 @Composable
-fun OtherChattingItem(text: String, time: String, modifier: Modifier) {
+fun OtherChattingItem(modifier: Modifier = Modifier, text: String, time: String) {
     Row(
         modifier,
         horizontalArrangement = Arrangement.Start
@@ -185,7 +186,7 @@ fun OtherChattingItem(text: String, time: String, modifier: Modifier) {
 }
 
 @Composable
-fun ChatBubble(text: String) {
+fun ChatBubble(modifier: Modifier = Modifier, text: String) {
     Box (
         modifier = Modifier
             .clip(RoundedCornerShape(10.dp))
@@ -197,7 +198,7 @@ fun ChatBubble(text: String) {
 }
 
 @Composable
-fun ChatTimestamp(modifier: Modifier, time: String) {
+fun ChatTimestamp(modifier: Modifier = Modifier, time: String) {
     Text(text = time, fontSize = 10.sp, color = Color.Gray, modifier = modifier)
 }
 

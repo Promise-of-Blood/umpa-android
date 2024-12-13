@@ -48,7 +48,7 @@ import com.pob.umpa.ui.view.main.ScaffoldNavItemList
 import kotlinx.coroutines.delay
 
 @Composable
-fun HomeScreen(modifier: Modifier, scaffoldNavController : NavHostController, mainNavController: NavHostController) {
+fun HomeScreen(modifier: Modifier = Modifier, scaffoldNavController : NavHostController, mainNavController: NavHostController) {
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +71,7 @@ fun HomeScreen(modifier: Modifier, scaffoldNavController : NavHostController, ma
                 Spacer(modifier = Modifier.padding(16.dp))
                 HomeItemTitle(modifier = Modifier, title = "입시 캘린더")
                 Spacer(modifier = Modifier.padding(6.dp))
-                HomeCalendar(mainNavController)
+                HomeCalendar(mainNavController = mainNavController)
                 Spacer(modifier = Modifier.padding(16.dp))
             }
         }
@@ -80,7 +80,7 @@ fun HomeScreen(modifier: Modifier, scaffoldNavController : NavHostController, ma
 }
 
 @Composable
-fun HomeItemTitle(modifier: Modifier, title: String) {
+fun HomeItemTitle(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = modifier.padding(start = 8.dp),
         text = title,
@@ -91,7 +91,7 @@ fun HomeItemTitle(modifier: Modifier, title: String) {
 }
 
 @Composable
-fun HomeFindTeacher(modifier: Modifier, mainNavController: NavHostController) {
+fun HomeFindTeacher(modifier: Modifier = Modifier, mainNavController: NavHostController) {
     val pagerState = rememberPagerState(pageCount = {2})
     HorizontalPager(state = pagerState) { page ->
         Column(modifier = modifier) {
@@ -116,7 +116,7 @@ fun HomeFindTeacher(modifier: Modifier, mainNavController: NavHostController) {
 }
 
 @Composable
-fun HomeFindTeacherItem(item : TeacherSubject, mainNavController: NavHostController) {
+fun HomeFindTeacherItem(modifier: Modifier = Modifier, item : TeacherSubject, mainNavController: NavHostController) {
     if(item.type == "empty") {
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -166,7 +166,7 @@ val bannerList = listOf(
 // 배너
 
 @Composable
-fun HomeBanner() {
+fun HomeBanner(modifier: Modifier = Modifier,) {
     val pagerState = rememberPagerState (pageCount = {
         3
     })
@@ -192,7 +192,7 @@ fun HomeBanner() {
 }
 
 @Composable
-fun HomeBannerItem(imgId : Int) {
+fun HomeBannerItem(modifier: Modifier = Modifier, imgId : Int) {
     Image(
         painter = painterResource(id = imgId),
         contentDescription = "배너",
@@ -205,7 +205,7 @@ fun HomeBannerItem(imgId : Int) {
 }
 
 @Composable
-fun HomeBannerPage(modifier: Modifier, text: String) {
+fun HomeBannerPage(modifier: Modifier = Modifier, text: String) {
     Box(modifier = modifier
         .width(60.dp)
         .height(25.dp)
@@ -219,7 +219,7 @@ fun HomeBannerPage(modifier: Modifier, text: String) {
 }
 
 @Composable
-fun HomeCommunityShortcut(modifier: Modifier, mainNavController: NavHostController) {
+fun HomeCommunityShortcut(modifier: Modifier = Modifier, mainNavController: NavHostController) {
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -230,13 +230,13 @@ fun HomeCommunityShortcut(modifier: Modifier, mainNavController: NavHostControll
             .fillMaxWidth()
     ) {
         CommunityShortcutItemList.forEach {
-            HomeCommunityShortcutItem(it , mainNavController)
+            HomeCommunityShortcutItem(item = it, mainNavController = mainNavController)
         }
     }
 }
 
 @Composable
-fun HomeCommunityShortcutItem(item: CommunityShortcutItem, mainNavController: NavHostController) {
+fun HomeCommunityShortcutItem(modifier: Modifier = Modifier, item: CommunityShortcutItem, mainNavController: NavHostController) {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable { mainNavController.navigate("community") }
@@ -248,7 +248,7 @@ fun HomeCommunityShortcutItem(item: CommunityShortcutItem, mainNavController: Na
 
 //
 @Composable
-fun HomeCalendar(navController : NavHostController) {
+fun HomeCalendar(modifier: Modifier = Modifier, mainNavController : NavHostController) {
     Log.d("달력 날짜 표시", "${getNowMonth()}, ${getFirstDay()}, ${getLastDay()}")
     // 30 * 6 (박스) + 2 * 5 (선) + 10(패딩)
     Box (
@@ -259,7 +259,7 @@ fun HomeCalendar(navController : NavHostController) {
             .clip(RoundedCornerShape(10.dp))
             .border(2.dp, UmpaColor.LightGray, shape = RoundedCornerShape(10.dp))
             .background(UmpaColor.LightGray)
-            .clickable { navController.navigate("calendar") }
+            .clickable { mainNavController.navigate("calendar") }
         ,
         contentAlignment = Alignment.Center
     ) {
