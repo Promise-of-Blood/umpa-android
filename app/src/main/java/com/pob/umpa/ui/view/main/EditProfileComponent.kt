@@ -225,9 +225,9 @@ fun EditText(defaultText: String, width: Dp? = null) {
 }
 
 @Composable
-fun DefaultButton(text: String) {
+fun DefaultButton(text: String, onClick: () -> Unit ) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),

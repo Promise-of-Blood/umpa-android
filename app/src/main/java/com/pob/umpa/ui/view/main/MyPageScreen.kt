@@ -4,6 +4,7 @@ package com.pob.umpa.ui.view.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,11 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.pob.umpa.R
 import com.pob.umpa.ui.theme.UmpaColor.Companion.Grey
 import com.pob.umpa.ui.theme.UmpaColor.Companion.Main
@@ -49,37 +52,38 @@ import com.pob.umpa.ui.theme.UmpaColor.Companion.White
 import com.pob.umpa.ui.theme.pretendardFontFamily
 
 @Composable
-fun MyPageScreen() {
+fun MyPageScreen(navController: NavController) {
     Column(
         Modifier
-            .padding(vertical = 40.dp)
+            .padding(vertical = 56.dp)
             .wrapContentHeight()
             .verticalScroll(rememberScrollState())
-            .background(White),) {
+            .background(White),
+    ) {
         MyPageTitle(Modifier, "프로필 관리")
-        ProfileCard(Modifier, teacherProfileDummy)
+        ProfileCard(navController, Modifier, teacherProfileDummy)
 
         Spacer(modifier = Modifier.padding(4.dp))
 
         MenuItem(Modifier, "레슨 소개 관리", switch = false)
-        MenuItem(Modifier,  title = "레슨 / 서비스 관리", switch = false )
+        MenuItem(Modifier, title = "레슨 / 서비스 관리", switch = false, onClick = { navController.navigate("managementServiceScreen")} )
         MenuItem(Modifier, "매칭 서비스에 내 프로필 공개", true)
-        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp),thickness = 0.5.dp)
+        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp), thickness = 0.5.dp)
 
         MyPageTitle(Modifier, "커뮤니티")
-        MenuItem(Modifier, "커뮤니티 작성글 / 댓글" , false )
-        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp),thickness = 0.5.dp)
+        MenuItem(Modifier, "커뮤니티 작성글 / 댓글", false)
+        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp), thickness = 0.5.dp)
 
         MyPageTitle(Modifier, "설정")
         MenuItem(Modifier, "채팅 알림", true)
-        MenuItem(Modifier, "푸시 알림", true )
-        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp),thickness = 0.5.dp)
+        MenuItem(Modifier, "푸시 알림", true)
+        HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp), thickness = 0.5.dp)
 
         MyPageTitle(Modifier, "가이드")
         MenuItem(Modifier, "앱 버전", false)
-        MenuItem(Modifier, "개인 정보 처리 방침", false )
+        MenuItem(Modifier, "개인 정보 처리 방침", false)
         MenuItem(Modifier, "오픈 소스 라이선스", false)
-        MenuItem(Modifier, "이용 약관", false )
+        MenuItem(Modifier, "이용 약관", false)
 
 
     }
@@ -97,10 +101,10 @@ fun MyPageTitle(modifier: Modifier, title: String) {
 }
 
 @Composable
-fun ProfileCard(modifier: Modifier, teacher: TeacherProfile) {
+fun ProfileCard(navController: NavController, modifier: Modifier, teacher: TeacherProfile) {
     Column(
         Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 32.dp)
             .fillMaxWidth()
             .wrapContentHeight()
             .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = Main)
@@ -114,7 +118,7 @@ fun ProfileCard(modifier: Modifier, teacher: TeacherProfile) {
                 Text(formatDate(teacher.date), fontSize = 10.sp, color = Grey)
                 Spacer(modifier.weight(1f))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("editProfile") },
                     modifier.size(100.dp, 35.dp),
                     shape = RoundedCornerShape(5.dp),
                     colors = ButtonDefaults.buttonColors(Main)
@@ -164,6 +168,7 @@ fun TeacherProfileTop(modifier: Modifier, teacher: TeacherProfile) {
                     fontSize = 16.sp
                 )
             }
+            Spacer(modifier = Modifier.size(4.dp))
             Row {
                 Text(text = teacher.major, fontSize = 12.sp, color = Color.Gray)
                 Spacer(modifier = modifier.padding(2.dp))
@@ -175,14 +180,16 @@ fun TeacherProfileTop(modifier: Modifier, teacher: TeacherProfile) {
 }
 
 
+
 @Composable
 fun CareerList(modifier: Modifier, career: TeacherCareer) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 50.dp, max = 100.dp)
+            .heightIn(min = 50.dp, max = 200.dp),
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        career.career.forEach { careerItem ->
+        career.career.forEachIndexed { index, careerItem ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painterResource(R.drawable.check),
@@ -193,17 +200,27 @@ fun CareerList(modifier: Modifier, career: TeacherCareer) {
                 Spacer(modifier = modifier.width(4.dp))
                 Text(text = careerItem, fontFamily = pretendardFontFamily, fontSize = 12.sp)
             }
+            if (index != career.career.lastIndex) {
+                Spacer(modifier = Modifier.size(4.dp))
+            }
         }
     }
 }
 
 @Composable
-fun MenuItem(modifier: Modifier, title: String, switch: Boolean) {
+fun MenuItem(
+    modifier: Modifier,
+    title: String,
+    switch: Boolean,
+    onClick: (() -> Unit)? = null
+) {
     Row(
         modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(horizontal = 32.dp), verticalAlignment = Alignment.CenterVertically
+            .height(60.dp)
+            .padding(horizontal = 32.dp)
+            .clickable{ onClick?.invoke() },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = title, fontFamily = pretendardFontFamily, fontSize = 12.sp)
         Spacer(modifier.weight(1f))
@@ -234,5 +251,5 @@ fun MenuSwitch(modifier: Modifier) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MyPageScreenPreview() {
-    MyPageScreen()
+    MyPageScreen(navController = NavController(LocalContext.current))
 }

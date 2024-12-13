@@ -134,7 +134,7 @@ fun EditLessonProfileScreen() {
 
             CategoryTitle(modifier = Modifier, title = "커리큘럼 소개")
 
-            DefaultButton(text = "커리큘럼 추가하기")
+            DefaultButton(text = "커리큘럼 추가하기" , {})
         }
     }
 }

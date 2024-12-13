@@ -40,7 +40,32 @@ fun MainNavigation(
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
-            MyPageScreen()
+            MyPageScreen(navController)
+        }
+        composable("editProfile") {
+            //프로필 수정 스크린
+            EditProfileScreen()
+        }
+        composable("lessonProfileScreen") {
+            //레슨 프로필 등록 스크린
+            EditLessonProfileScreen()
+        }
+        composable("accompanistProfileScreen"){
+            //반주자 프로필 등록 스크린
+            AccompanistProfileScreen()
+        }
+        composable("scoreMakingProfileScreen"){
+            //악보 제작 프로필 등록 스크린
+            ScoreMakingProfileScreen()
+        }
+        composable("mrMakingProfileScreen"){
+            //엠알 제작 프로필 등록 스크린
+            MrMakingProfileScreen()
+        }
+        
+        composable("managementServiceScreen"){
+            //서비스 관리 스크린
+            ManagementServiceScreen(navController = navController)
         }
     }
 }

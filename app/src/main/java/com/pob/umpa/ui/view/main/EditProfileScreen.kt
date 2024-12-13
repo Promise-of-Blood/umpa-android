@@ -25,19 +25,20 @@ import com.pob.umpa.ui.theme.UmpaColor.Companion.White
 
 
 val subjectList = listOf("보컬", "피아노", "작곡", "기타", "드럼", "베이스", "관악", "전자 음악", "화성학")
-val locationList = listOf("서울/대전/대구/부산/광주/경기도")
+val locationList = listOf("서울","대전","대구","부산","광주","경기도")
 
 @Composable
-fun EditProfileScreen() {
+fun EditProfileScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(vertical = 56.dp)
             .verticalScroll(rememberScrollState())
             .background(White)
     ) {
         Column(
             Modifier
-                .padding(horizontal = 16.dp, vertical = 32.dp)
+                .padding(horizontal = 32.dp, vertical = 32.dp)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -61,7 +62,7 @@ fun EditProfileScreen() {
             EditText("대표 문구를 입력하세요")
 
             EditProfileTitle(modifier = Modifier, title = "사이트 링크" ,false)
-            DefaultButton(text = "링크 추가하기")
+            DefaultButton(text = "링크 추가하기", { })
 
             EditProfileTitle(modifier = Modifier, title = "경력 사항" ,false)
             EditText("대표 경력 사항을 입력해주세요")
