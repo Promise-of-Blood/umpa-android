@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.compose.compiler)
+//    alias(libs.plugins.compose.compiler)
     id("com.google.dagger.hilt.android")
 }
 
@@ -62,12 +62,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.coil.kt.coil.compose)
 
     implementation(libs.dagger.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.material)
+    implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.youtube.player)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -36,6 +36,7 @@ value class UmpaColor private constructor(val color : Color) {
         val LightGray = Color(0xFFEBEBEB)
         // Middle Grey, naming by 김윤재
         val MiddleGrey = Color(0xFFC2C2C2)
+        val Transparent = Color(0x00000000)
         val Opacity50Black = Color(0x80000000)
     }
 }
