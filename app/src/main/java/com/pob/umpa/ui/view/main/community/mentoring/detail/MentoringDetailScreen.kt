@@ -34,13 +34,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pob.umpa.domain.Comment
+import com.pob.umpa.domain.DetailComment
 import com.pob.umpa.domain.MentoringDetailModel
 import com.pob.umpa.domain.MockMentoringDetailData.mockMentoringDetailData
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.view.main.community.Question.detail.QuestionDetailScreen
 import com.pob.umpa.ui.view.main.matching.detail.component.card.YoutubePlayer
 import com.pob.umpa.util.parseVideoLink
 import com.pob.umpa.util.toDiffString
@@ -89,7 +91,7 @@ fun MentoringDetailScreen(
             }
 
             commentList(
-                commentList = data.commentList,
+                detailCommentList = data.commentList,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 16.dp),
@@ -205,12 +207,12 @@ private fun ContentText(
 }
 
 private fun LazyListScope.commentList(
-    commentList: List<Comment>,
+    detailCommentList: List<DetailComment>,
     modifier: Modifier = Modifier,
 ) {
     item {
         Text(
-            text = "댓글 (${commentList.size})",
+            text = "댓글 (${detailCommentList.size})",
             style = Typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = UmpaColor.Black,
@@ -219,24 +221,24 @@ private fun LazyListScope.commentList(
 
         Spacer(modifier = Modifier.height(12.dp))
     }
-    if (commentList.isEmpty()) {
+    if (detailCommentList.isEmpty()) {
         item {
             EmptyComment()
         }
     } else {
-        itemsIndexed(commentList) { index, comment ->
+        itemsIndexed(detailCommentList) { index, comment ->
             CommentItem(
-                comment = comment,
+                detailComment = comment,
                 modifier = modifier,
             )
-            if (index != commentList.lastIndex) GrayDivider(modifier = modifier)
+            if (index != detailCommentList.lastIndex) GrayDivider(modifier = modifier)
         }
     }
 }
 
 @Composable
 private fun CommentItem(
-    comment: Comment,
+    detailComment: DetailComment,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -249,20 +251,20 @@ private fun CommentItem(
             horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = comment.username,
+                text = detailComment.username,
                 style = Typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 color = UmpaColor.Black,
             )
             Text(
-                text = comment.createdAt.toDiffString(),
+                text = detailComment.createdAt.toDiffString(),
                 style = Typography.labelSmall,
                 fontWeight = FontWeight.Normal,
                 color = UmpaColor.Black,
             )
         }
         Text(
-            text = comment.content,
+            text = detailComment.content,
             style = Typography.bodySmall,
             fontWeight = FontWeight.Normal,
             color = UmpaColor.Black,
@@ -338,3 +340,4 @@ private fun GrayDivider(
         color = UmpaColor.LightGray, thickness = (1.5).dp, modifier = modifier,
     )
 }
+
