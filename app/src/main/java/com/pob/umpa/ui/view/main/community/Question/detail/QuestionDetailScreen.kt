@@ -125,7 +125,7 @@ fun QuestionCommentTextField(
         onValueChange = setValue,
         singleLine = false,
         maxLines = 3,
-        textStyle = Typography.bodySmall,
+        textStyle = Typography.bodyMedium.copy(color = UmpaColor.Black),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         decorationBox = { innerTextField ->
             if (value.isEmpty()) {
@@ -136,7 +136,7 @@ fun QuestionCommentTextField(
 
                     Text(
                         text = placeholder,
-                        style = Typography.bodySmall,
+                        style = Typography.bodyMedium,
                         color = UmpaColor.Grey,
                     )
                 }
