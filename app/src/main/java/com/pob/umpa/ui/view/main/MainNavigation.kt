@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pob.umpa.ui.view.main.chatting.ChatListScreen
 import com.pob.umpa.ui.view.main.community.CommunityScreen
+import com.pob.umpa.ui.view.main.community.Question.detail.QuestionDetailScreen
 import com.pob.umpa.ui.view.main.home.HomeScreen
 import com.pob.umpa.ui.view.main.home.calendar.CalendarScreen
 import com.pob.umpa.ui.view.main.matching.MatchingScreen
@@ -37,13 +38,42 @@ fun MainNavigation(
             // 커뮤니티 부분 스크린
             CommunityScreen()
         }
+        composable("community/question/detail") {
+            // 커뮤니티 부분 스크린
+            QuestionDetailScreen(modifier = modifier)
+        }
         composable("chatting") {
             // 채팅 부분 스크린
             ChatListScreen(modifier = modifier, scaffoldNavController = scaffoldNavController)
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
-            MyPageScreen()
+            MyPageScreen(navController)
+        }
+        composable("editProfile") {
+            //프로필 수정 스크린
+            EditProfileScreen()
+        }
+        composable("lessonProfileScreen") {
+            //레슨 프로필 등록 스크린
+            EditLessonProfileScreen()
+        }
+        composable("accompanistProfileScreen"){
+            //반주자 프로필 등록 스크린
+            AccompanistProfileScreen()
+        }
+        composable("scoreMakingProfileScreen"){
+            //악보 제작 프로필 등록 스크린
+            ScoreMakingProfileScreen()
+        }
+        composable("mrMakingProfileScreen"){
+            //엠알 제작 프로필 등록 스크린
+            MrMakingProfileScreen()
+        }
+        
+        composable("managementServiceScreen"){
+            //서비스 관리 스크린
+            ManagementServiceScreen(navController = navController)
         }
         composable("calendar") {
             // 매칭 서비스 부분 스크린
