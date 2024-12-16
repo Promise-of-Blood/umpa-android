@@ -59,14 +59,18 @@ import com.pob.umpa.util.toCommaString
 
 @Composable
 fun MatchingScreen(
-    navController: NavController, modifier: Modifier = Modifier
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    lessonDropDownMenuItem: String = lessonTypeList[0],
+    instrumentDropDownMenuItem: String = InstrumentsTypeList[0],
 ) {
     Column(modifier = modifier) {
 
         MatchingOptions(
             modifier = Modifier
                 .background(Color.Red)
-                .padding(10.dp)
+                .padding(10.dp),
+            dropDownMenuItem = Pair(lessonDropDownMenuItem, instrumentDropDownMenuItem)
         )
 
         MatchingList(
@@ -79,26 +83,26 @@ fun MatchingScreen(
 }
 
 @Composable
-fun MatchingOptions(modifier: Modifier = Modifier) {
+fun MatchingOptions(modifier: Modifier = Modifier, dropDownMenuItem: Pair<String, String> = Pair(lessonTypeList[0], InstrumentsTypeList[0])) {
 
     Row() {
-        MatchingDropDownMenu(dropMenuList = lessonTypeList)
+        MatchingDropDownMenu(dropMenuList = lessonTypeList, dropDownMenuItem = dropDownMenuItem.first)
 
         Spacer(modifier = Modifier.padding(end = 10.dp))
 
-        MatchingDropDownMenu(dropMenuList = InstrumentsTypeList)
+        MatchingDropDownMenu(dropMenuList = InstrumentsTypeList, dropDownMenuItem = dropDownMenuItem.second)
     }
 
 }
 
 
 @Composable
-fun MatchingDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<String>) {
+fun MatchingDropDownMenu(modifier: Modifier = Modifier, dropMenuList: List<String>, dropDownMenuItem: String = dropMenuList[0],) {
 
     val context = LocalContext.current
 
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(dropMenuList[0]) }
+    var selectedText by remember { mutableStateOf(dropDownMenuItem) }
 
     OutlinedButton(
         onClick = { isDropDownMenuExpanded = true },

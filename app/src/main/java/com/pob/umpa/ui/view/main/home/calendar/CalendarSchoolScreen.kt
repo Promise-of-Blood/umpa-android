@@ -87,8 +87,17 @@ fun SchoolItem(modifier: Modifier = Modifier, isClosed: Boolean) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text("서울예술대학교")
-        if(isClosed) Icon(painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24), contentDescription = null, tint = UmpaColor.Grey)
-        else Icon(painter = painterResource(id = R.drawable.baseline_arrow_drop_up_24), contentDescription = null, tint = UmpaColor.Grey)
+        Icon(
+            painter = painterResource
+                (id =
+                if(isClosed)
+                    R.drawable.baseline_arrow_drop_down_24
+                else
+                    R.drawable.baseline_arrow_drop_up_24
+                        ),
+            contentDescription = null,
+            tint = UmpaColor.Grey
+        )
     }
 }
 
@@ -103,7 +112,7 @@ fun SchoolOpenItem(modifier: Modifier = Modifier,) {
         SchoolItem(modifier = modifier, isClosed = false)
         SchoolTypeButtonGroup()
         Spacer(modifier = Modifier.padding(4.dp))
-        SchoolCheckBox()
+        SchoolCheckBoxGroup()
     }
 }
 
@@ -131,24 +140,24 @@ fun SchoolTypeButton(modifier: Modifier = Modifier, typeText: String) {
 }
 
 @Composable
-fun SchoolCheckBox(modifier: Modifier = Modifier,) {
+fun SchoolCheckBox(modifier: Modifier = Modifier, schoolText: String, isEndItem: Boolean = false) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = false, onCheckedChange = {})
+        Text(text = schoolText)
+        if(isEndItem) Spacer(modifier = Modifier.padding(6.dp))
+    }
+}
+
+@Composable
+fun SchoolCheckBoxGroup(modifier: Modifier = Modifier,) {
     Row (
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(checked = false, onCheckedChange = {})
-            Text(text = "원서 접수")
-        }
-        Row (
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(checked = false, onCheckedChange = {})
-            Text(text = "실기 일정")
-            Spacer(modifier = Modifier.padding(8.dp))
-        }
+        SchoolCheckBox(schoolText = "원서 접수")
+        SchoolCheckBox(schoolText = "실기 일정", isEndItem = true)
     }
 }
 
@@ -194,5 +203,6 @@ fun SaveSchoolButton(modifier: Modifier = Modifier,) {
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun CalendarSchoolScreenPreview() {
+    SchoolCheckBoxGroup()
 }
 

@@ -131,7 +131,9 @@ fun HomeFindTeacherItem(modifier: Modifier = Modifier, item : TeacherSubject, ma
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(vertical = 10.dp).clickable { mainNavController.navigate("matching") }
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .clickable { mainNavController.navigate("contact") }
         ) {
             Card(
                 modifier = Modifier
@@ -242,6 +244,7 @@ fun HomeCommunityShortcutItem(modifier: Modifier = Modifier, item: CommunityShor
         modifier = Modifier.clickable { mainNavController.navigate("community") }
     ) {
         Image(painter = painterResource(id = item.image), contentDescription = item.name, modifier = Modifier.size(40.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         Text(text = item.name, textAlign = TextAlign.Center, fontSize = 12.sp)
     }
 }
@@ -286,7 +289,8 @@ fun HomeCalendar(modifier: Modifier = Modifier, mainNavController : NavHostContr
                 }
             }
 
-            items(getFirstDay()) {
+            items(getFirstDay() % 7) {
+                Log.d("getFirstDay", getFirstDay().toString())
                 Spacer(
                     modifier = Modifier
                         .height(30.dp)

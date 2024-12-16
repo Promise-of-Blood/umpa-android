@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pob.umpa.domain.Comment
+import com.pob.umpa.domain.MentoringDetailComment
 import com.pob.umpa.domain.MentoringDetailModel
 import com.pob.umpa.domain.MockMentoringDetailData.mockMentoringDetailData
 import com.pob.umpa.ui.theme.Typography
@@ -205,7 +206,7 @@ private fun ContentText(
 }
 
 private fun LazyListScope.commentList(
-    commentList: List<Comment>,
+    commentList: List<MentoringDetailComment>,
     modifier: Modifier = Modifier,
 ) {
     item {
@@ -236,7 +237,7 @@ private fun LazyListScope.commentList(
 
 @Composable
 private fun CommentItem(
-    comment: Comment,
+    comment: MentoringDetailComment,
     modifier: Modifier = Modifier,
 ) {
     Column(

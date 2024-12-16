@@ -1,7 +1,9 @@
 package com.pob.umpa.ui.view.main
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,4 +30,22 @@ fun ScaffoldNavigation(
             ChattingScaffoldScreen(scaffoldNavController = scaffoldNavController)
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun MainScaffoldPreview() {
+    MainScaffold(mainNavController = rememberNavController(), scaffoldNavController = rememberNavController())
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun CalendarScaffoldPreview() {
+    CalendarSchoolScreen(scaffoldNavController = rememberNavController())
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun ChattingScaffoldPreview() {
+    ChattingScaffoldScreen(scaffoldNavController = rememberNavController())
 }

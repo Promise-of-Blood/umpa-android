@@ -1,6 +1,7 @@
 package com.pob.umpa.ui.view.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -66,37 +67,37 @@ fun MainScaffold(
     scaffoldNavController: NavHostController
 ) {
     val backStackEntry = mainNavController.currentBackStackEntryAsState()
+    MainScaffoldComponent(
+        mainNavController = mainNavController,
+        scaffoldNavController = scaffoldNavController,
+        backStackEntry = backStackEntry.value
+    )
+}
+
+@Composable
+fun MainScaffoldComponent(
+    modifier: Modifier = Modifier,
+    mainNavController: NavHostController,
+    scaffoldNavController: NavHostController,
+    backStackEntry: NavBackStackEntry?,
+) {
     Scaffold(
         modifier = modifier
             .fillMaxSize()
             .safeDrawingPadding(),
         topBar = {
+            // TODO TopBar를 if문으로 나누지 않고, 같은 컴포넌트 안에서, 데이터 클래스의 속성에 따라 분류하는 방식으로 변경하는 게 좋을 것 같음
             MainItemList.forEach { item ->
-                if(backStackEntry.value?.destination?.route == "calendar") {
+                if(backStackEntry?.destination?.route == "calendar") {
                     CalendarTopAppBar(scaffoldNavController = scaffoldNavController)
                 }
-                else if(item.route == backStackEntry.value?.destination?.route) {
-                    MainNavTopAppBar(item = item)
+                else if(item.route == backStackEntry?.destination?.route) {
+                    MainNavTopAppBar(item = item, mainNavController = mainNavController)
                 }
             }
         },
         bottomBar = {
-            BottomNavigation (
-                backgroundColor = Color.White,
-                contentColor = Color.Black,
-                elevation = 10.dp,
-            ) {
-                MainItemList.forEach { item ->
-                    BottomNavigationItem(
-                        selected = item.route == backStackEntry.value?.destination?.route,
-                        onClick = { mainNavController.navigate(item.route) },
-                        label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
-                        icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
-                        selectedContentColor = Black,
-                        unselectedContentColor = UmpaColor.MiddleGrey
-                    )
-                }
-            }
+            MainBottomNavigation(backStackEntry = backStackEntry, mainNavController = mainNavController)
         }
     ) { innerPadding ->
         MainNavigation(
@@ -111,6 +112,29 @@ fun MainScaffold(
                 ),
             scaffoldNavController = scaffoldNavController,
         )
+    }
+}
+
+@Composable
+fun MainBottomNavigation(modifier: Modifier = Modifier, backStackEntry: NavBackStackEntry?, mainNavController: NavHostController) {
+    val isMainNavigation = MainItemList.any { it.route == backStackEntry?.destination?.route }
+    if (isMainNavigation) {
+        BottomNavigation (
+            backgroundColor = UmpaColor.White,
+            contentColor = UmpaColor.Black,
+            elevation = 10.dp,
+        ) {
+            MainItemList.forEach { item ->
+                BottomNavigationItem(
+                    selected = item.route == backStackEntry?.destination?.route,
+                    onClick = { mainNavController.navigate(item.route) },
+                    label = { Text(text = item.name, style = TextStyle(fontSize = 12.sp)) },
+                    icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.name) },
+                    selectedContentColor = Black,
+                    unselectedContentColor = UmpaColor.MiddleGrey
+                )
+            }
+        }
     }
 }
 
@@ -138,7 +162,8 @@ fun CalendarTopAppBar(modifier: Modifier = Modifier, scaffoldNavController: NavH
 }
 
 @Composable
-fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem) {
+fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem, mainNavController: NavHostController) {
+    val isMainNavigation = MainItemList.any { it.route == item.route }
     TopAppBar(
         title = {
             Text(
@@ -152,24 +177,24 @@ fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem) {
         backgroundColor = UmpaColor.White,
         contentColor = UmpaColor.Black,
         modifier = Modifier.height(60.dp),
-        elevation = 0.dp
+        elevation = 0.dp,
+        navigationIcon = if (!isMainNavigation) {
+            {
+                IconButton(onClick = { mainNavController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBackIosNew, contentDescription = "뒤로가기"
+                    )
+                }
+            }
+        } else null,
     )
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier.padding(20.dp),
-        fontFamily = pretendardFontFamily,
-        fontWeight = FontWeight.Black
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    UmpaTheme {
-        Greeting("Android")
+fun ErrorScaffoldComponent(modifier : Modifier = Modifier) {
+    Scaffold { innerPadding ->
+        Text(text = "오류 발생 ! ! !", modifier = modifier
+            .padding(innerPadding)
+            .fillMaxSize())
     }
 }

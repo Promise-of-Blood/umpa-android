@@ -89,7 +89,7 @@ fun ChattingScaffoldScreen(
                         .clickable { scaffoldNavController.popBackStack() }
                 ) }
             )
-        }
+        },
     ) { innerPadding ->
         ChattingScreen(modifier = Modifier
             .fillMaxSize()
