@@ -32,7 +32,7 @@ fun EditProfileScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 56.dp)
+            .padding(top = 56.dp)
             .verticalScroll(rememberScrollState())
             .background(White)
     ) {

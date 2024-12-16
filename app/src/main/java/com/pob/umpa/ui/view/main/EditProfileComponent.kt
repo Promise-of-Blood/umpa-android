@@ -1,5 +1,6 @@
 package com.pob.umpa.ui.view.main
 
+import android.health.connect.datatypes.units.Length
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -46,6 +48,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -58,6 +61,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -202,12 +206,13 @@ fun SpinnerWithButton(optionList: List<String>, defaultText: String) {
 }
 
 @Composable
-fun EditText(defaultText: String, width: Dp? = null) {
-    var value by remember { mutableStateOf(defaultText) }
+fun EditText(defaultText: String, width: Dp? = null, maxLength: Int? = null, maxLine: Int? = null) {
+    var value by remember { mutableStateOf("") }
     TextField(
         value = value,
+        placeholder = {Text(defaultText, style = TextStyle(color = UmpaColor.Grey, fontFamily = pretendardFontFamily, fontWeight = FontWeight.Medium, fontSize = 14.sp))},
         onValueChange = { value = it },
-        textStyle = TextStyle(color = Grey),
+        textStyle = TextStyle(color = UmpaColor.Black),
         modifier = Modifier
             .then(
                 if (width != null) {
@@ -225,14 +230,22 @@ fun EditText(defaultText: String, width: Dp? = null) {
 }
 
 @Composable
-fun DefaultButton(text: String, onClick: () -> Unit ) {
+fun DefaultButton(text: String, onClick: () -> Unit, width: Dp? = null) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        modifier =
+        if (width == null) {
+            Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        } else {
+            Modifier
+                .width(width)
+                .height(50.dp)
+        },
         colors = ButtonDefaults.buttonColors(Main),
-        shape = RoundedCornerShape(5.dp)
+        shape = RoundedCornerShape(5.dp),
+        contentPadding = PaddingValues(0.dp)
     ) {
         Text(text = text)
     }
@@ -332,8 +345,6 @@ fun CheckBoxText(text: String) {
 }
 
 val timeList = (0..23).map { it.toString().padStart(2, '0') }
-
-
 
 
 @Composable
@@ -436,7 +447,7 @@ fun MultiSelectChips(options: List<String>) {
         options.forEach { option ->
             Card(
                 shape = RoundedCornerShape(20.dp),
-                backgroundColor = if(selectedOptions.contains(option)){
+                backgroundColor = if (selectedOptions.contains(option)) {
                     UmpaColor.LightBlue
                 } else {
                     UmpaColor.LightGray
@@ -450,7 +461,7 @@ fun MultiSelectChips(options: List<String>) {
                         }
                     }
                     .padding(4.dp)
-            ){
+            ) {
                 Text(
                     text = option,
                     color = UmpaColor.Black,

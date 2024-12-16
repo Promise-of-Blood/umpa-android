@@ -65,9 +65,7 @@ fun MyPageScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.padding(4.dp))
 
-        MenuItem(Modifier, "레슨 소개 관리", switch = false)
         MenuItem(Modifier, title = "레슨 / 서비스 관리", switch = false, onClick = { navController.navigate("managementServiceScreen")} )
-        MenuItem(Modifier, "매칭 서비스에 내 프로필 공개", true)
         HorizontalDivider(Modifier.padding(horizontal = 4.dp, vertical = 16.dp), thickness = 0.5.dp)
 
         MyPageTitle(Modifier, "커뮤니티")
