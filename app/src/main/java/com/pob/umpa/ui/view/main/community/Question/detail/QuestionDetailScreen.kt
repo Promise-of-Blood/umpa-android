@@ -11,16 +11,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.R
@@ -43,7 +46,6 @@ import com.pob.umpa.domain.QuestionCommentModel
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
 import com.pob.umpa.ui.theme.UmpaTheme
-import com.pob.umpa.ui.view.main.CheckBoxText
 
 @Composable
 fun QuestionDetailScreen(modifier: Modifier = Modifier) {
@@ -83,7 +85,7 @@ fun QuestionDetailScreen(modifier: Modifier = Modifier) {
         QuestionCommentInput(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(32.dp) // 높이 지정
+                .height(48.dp) // 높이 지정
                 .background(color = UmpaColor.White)
         )
     }
@@ -91,9 +93,58 @@ fun QuestionDetailScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun QuestionCommentInput(modifier: Modifier) {
-    Row(modifier = modifier) {
+
+    var text by remember { mutableStateOf("") }
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         AnonymousCheckBox(modifier = Modifier)
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        QuestionCommentTextField(
+            modifier = Modifier.height(20.dp),
+            value = text,
+            setValue = { text = it },
+            placeholder = "답변을 입력해주세요"
+        )
     }
+}
+
+@Composable
+fun QuestionCommentTextField(
+    value: String = "",
+    setValue: (String) -> Unit = {},
+    modifier: Modifier,
+    placeholder: String = ""
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = setValue,
+        singleLine = false,
+        maxLines = 3,
+        textStyle = Typography.bodyMedium.copy(color = UmpaColor.Black),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        decorationBox = { innerTextField ->
+            if (value.isEmpty()) {
+                Column(
+                    modifier = Modifier,
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Text(
+                        text = placeholder,
+                        style = Typography.bodyMedium,
+                        color = UmpaColor.Grey,
+                    )
+                }
+            }
+            innerTextField()
+        },
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -103,9 +154,18 @@ fun AnonymousCheckBox(modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
             checked = isChecked,
-            onCheckedChange = { isChecked = it }
+            onCheckedChange = { isChecked = it },
+            colors = CheckboxDefaults.colors(
+                checkedColor = UmpaColor.White,
+                uncheckedColor = UmpaColor.Grey,
+                checkmarkColor = UmpaColor.Main
+            ),
+            modifier = Modifier.size(20.dp)
         )
-        Text("익명", style = Typography.bodySmall, color = UmpaColor.Black)
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Text("익명", style = Typography.bodySmall, color = UmpaColor.Grey)
     }
 }
 
