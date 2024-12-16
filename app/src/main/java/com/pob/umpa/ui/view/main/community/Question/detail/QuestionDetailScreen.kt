@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -34,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -159,8 +159,12 @@ fun AnonymousCheckBox(modifier: Modifier = Modifier) {
                 checkedColor = UmpaColor.White,
                 uncheckedColor = UmpaColor.Grey,
                 checkmarkColor = UmpaColor.Main
-            )
+            ),
+            modifier = Modifier.size(20.dp)
         )
+
+        Spacer(modifier = Modifier.width(10.dp))
+
         Text("익명", style = Typography.bodySmall, color = UmpaColor.Grey)
     }
 }
