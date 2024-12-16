@@ -87,13 +87,11 @@ fun MainScaffoldComponent(
             .safeDrawingPadding(),
         topBar = {
             // TODO TopBar를 if문으로 나누지 않고, 같은 컴포넌트 안에서, 데이터 클래스의 속성에 따라 분류하는 방식으로 변경하는 게 좋을 것 같음
-            MainItemList.forEach { item ->
-                if(backStackEntry?.destination?.route == "calendar") {
-                    CalendarTopAppBar(scaffoldNavController = scaffoldNavController)
-                }
-                else if(item.route == backStackEntry?.destination?.route) {
-                    MainNavTopAppBar(item = item, mainNavController = mainNavController)
-                }
+            if(backStackEntry?.destination?.route == "calendar") {
+                CalendarTopAppBar(scaffoldNavController = scaffoldNavController)
+            }
+            else {
+                MainNavTopAppBar(mainNavController = mainNavController)
             }
         },
         bottomBar = {
@@ -162,12 +160,13 @@ fun CalendarTopAppBar(modifier: Modifier = Modifier, scaffoldNavController: NavH
 }
 
 @Composable
-fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem, mainNavController: NavHostController) {
-    val isMainNavigation = MainItemList.any { it.route == item.route }
+fun MainNavTopAppBar(modifier: Modifier = Modifier, mainNavController: NavHostController) {
+    val currentRoute = mainNavController.currentBackStackEntry?.destination?.route
+    val isMainNavigation = MainItemList.any { it.route == currentRoute }
     TopAppBar(
         title = {
             Text(
-                text = item.topTitle,
+                text = MainItemList.find { it.route == currentRoute }?.topTitle ?: "",
                 fontFamily = pretendardFontFamily,
                 fontWeight = FontWeight.Black,
                 fontSize = 24.sp,
@@ -187,6 +186,20 @@ fun MainNavTopAppBar(modifier: Modifier = Modifier, item : MainNavItem, mainNavC
                 }
             }
         } else null,
+        actions = {
+            val serviceAddPageList = listOf( "lessonProfileScreen","accompanistProfileScreen", "scoreMakingProfileScreen" , "mrMakingProfileScreen","editProfile")
+            if(currentRoute in serviceAddPageList){
+
+                Text(
+                    text = "완료",
+                    style = TextStyle(color = UmpaColor.Main, fontSize = 16.sp, fontFamily = pretendardFontFamily, fontWeight = FontWeight.SemiBold),
+                    modifier = Modifier
+                        .clickable { mainNavController.popBackStack() }
+                        .padding(end = 16.dp)
+                )
+
+            }
+        }
     )
 }
 
