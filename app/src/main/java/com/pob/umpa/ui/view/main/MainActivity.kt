@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -101,6 +103,21 @@ fun MainTopAppBar(backStackEntry: NavBackStackEntry?, navController: NavControll
                 }
             }
         } else null,
+        actions = {
+            val serviceAddPageList = listOf( "lessonProfileScreen","accompanistProfileScreen", "scoreMakingProfileScreen" , "mrMakingProfileScreen","editProfile")
+            if(currentRoute in serviceAddPageList){
+
+                Text(
+                    text = "완료",
+                    style = TextStyle(color = UmpaColor.Main, fontSize = 16.sp, fontFamily = pretendardFontFamily, fontWeight = FontWeight.SemiBold),
+                    modifier = Modifier
+                        .clickable { navController.popBackStack() }
+                        .padding(end = 16.dp)
+                )
+
+            }
+        }
+
     )
 }
 
