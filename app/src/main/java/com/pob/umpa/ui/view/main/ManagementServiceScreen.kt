@@ -92,7 +92,7 @@ fun ManagementServiceScreen(modifier: Modifier = Modifier, navController: NavCon
                     "레슨" -> navController.navigate("lessonProfileScreen")
                     "반주" -> navController.navigate("accompanistProfileScreen")
                     "악보 제작" -> navController.navigate("scoreMakingProfileScreen")
-                    "Mr 제작" -> navController.navigate("mrMakingProfileScreen")
+                    "MR 제작" -> navController.navigate("mrMakingProfileScreen")
                 }
             }
         )
@@ -157,14 +157,14 @@ fun ServiceInfoCard(serviceData: MatchingModel) {
             Row(
                 modifier = Modifier
                     .height(90.dp),
-                verticalAlignment = Alignment.CenterVertically // Row 내부 항목을 세로 중앙 정렬
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 // 이미지
                 Image(
                     painter = painterResource(id = R.drawable.find_teacher_accompanist),
                     contentDescription = "Teacher Image",
                     modifier = Modifier
-                        .size(90.dp), // 이미지 높이를 Row 높이에 맞춤
+                        .size(90.dp),
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -172,8 +172,8 @@ fun ServiceInfoCard(serviceData: MatchingModel) {
                 // 텍스트 정보
                 Column(
                     modifier = Modifier
-                        .fillMaxHeight(), // Column이 Row 높이를 모두 차지
-                    verticalArrangement = Arrangement.SpaceBetween // 요소 간 간격 균등 배치
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     // 제목
                     Text(
@@ -184,7 +184,7 @@ fun ServiceInfoCard(serviceData: MatchingModel) {
                             fontWeight = FontWeight.Bold
                         ),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis // 텍스트가 넘칠 경우 줄임표 처리
+                        overflow = TextOverflow.Ellipsis
                     )
 
                     // 평점 및 위치
@@ -195,7 +195,7 @@ fun ServiceInfoCard(serviceData: MatchingModel) {
                             imageVector = Icons.Filled.Star,
                             contentDescription = null,
                             tint = Color.Yellow,
-                            modifier = Modifier.size(16.dp) // 아이콘 크기 제한
+                            modifier = Modifier.size(16.dp)
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
