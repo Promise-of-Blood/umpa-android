@@ -13,10 +13,10 @@ data class MentoringDetailModel(
     val mentorName: String,
     val mentorInstrumentsType: String,
     val createdAt: LocalDateTime,
-    val commentList: List<DetailComment>,
+    val commentList: List<MentoringDetailComment>,
 )
 
-data class DetailComment(
+data class MentoringDetailComment(
     val commentId: String,
     val username: String,
     val content: String,
