@@ -48,7 +48,7 @@ fun MainNavigation(
         }
         composable("myinfo") {
             // 내 정보 부분 스크린
-            MyPageScreen(navController)
+            MyPageScreen(mainNavController)
         }
         composable("editProfile") {
             //프로필 수정 스크린
@@ -73,7 +73,7 @@ fun MainNavigation(
         
         composable("managementServiceScreen"){
             //서비스 관리 스크린
-            ManagementServiceScreen(navController = navController)
+            ManagementServiceScreen(navController = mainNavController)
         }
         composable("calendar") {
             // 매칭 서비스 부분 스크린
