@@ -10,15 +10,17 @@ import androidx.navigation.navArgument
 import com.pob.umpa.ui.view.main.community.AcceptReview.AcceptReviewDetailScreen
 import com.pob.umpa.ui.view.main.community.AcceptReview.AcceptReviewScreen
 import com.pob.umpa.ui.view.main.community.InformationSharing.InformationSharingScreen
-import com.pob.umpa.ui.view.main.community.Mentoring.MentoringScreen
 import com.pob.umpa.ui.view.main.community.Question.QuestionsScreen
+import com.pob.umpa.ui.view.main.community.mentoring.MentoringDetailScreen
+import com.pob.umpa.ui.view.main.community.mentoring.MentoringScreen
 
 @Composable
 fun CommunityNavigation(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+    navController: NavHostController, modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = "accept_review", modifier = modifier) {
+    NavHost(
+        navController = navController, startDestination = "accept_review", modifier = modifier
+    ) {
         composable("accept_review") {
             AcceptReviewScreen()
         }
@@ -29,7 +31,17 @@ fun CommunityNavigation(
             QuestionsScreen()
         }
         composable("mentoring") {
-            MentoringScreen()
+            MentoringScreen(
+                navController = navController,
+            )
+        }
+        composable(
+            route = "mentoring/{mentoringId}",
+            arguments = listOf(navArgument("mentoringId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            MentoringDetailScreen(
+                mentoringId = backStackEntry.arguments?.getString("mentoringId") ?: "",
+            )
         }
         composable(
             route = "accept_review_detail/{id}",

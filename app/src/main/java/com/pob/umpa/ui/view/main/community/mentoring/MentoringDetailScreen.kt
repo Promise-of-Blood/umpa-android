@@ -1,4 +1,4 @@
-package com.pob.umpa.ui.view.main.community.mentoring.detail
+package com.pob.umpa.ui.view.main.community.mentoring
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,7 +42,7 @@ import com.pob.umpa.domain.MentoringDetailModel
 import com.pob.umpa.domain.MockMentoringDetailData.mockMentoringDetailData
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
-import com.pob.umpa.ui.view.main.community.Question.detail.QuestionDetailScreen
+import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.view.main.matching.detail.component.card.YoutubePlayer
 import com.pob.umpa.util.parseVideoLink
 import com.pob.umpa.util.toDiffString
@@ -51,6 +51,7 @@ import com.pob.umpa.util.toFormattedString
 @Composable
 fun MentoringDetailScreen(
     modifier: Modifier = Modifier,
+    mentoringId: String,
 ) {
     val data = mockMentoringDetailData
     var value by remember { mutableStateOf("") }
@@ -69,7 +70,8 @@ fun MentoringDetailScreen(
                     modifier = Modifier.padding(vertical = 12.dp),
                 ) {
                     TitleText(
-                        title = data.title, modifier = Modifier.padding(horizontal = 16.dp)
+                        title = "${data.title}$mentoringId",
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
                     MentorProfile(
@@ -341,3 +343,12 @@ private fun GrayDivider(
     )
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun MentoringDetailScreenPreview() {
+    UmpaTheme {
+        MentoringDetailScreen(
+            mentoringId = "sampleId"
+        )
+    }
+}
