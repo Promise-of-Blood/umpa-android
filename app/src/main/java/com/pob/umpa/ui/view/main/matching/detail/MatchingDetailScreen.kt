@@ -57,31 +57,25 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.R
 import com.pob.umpa.domain.MatchingDetailModel
 import com.pob.umpa.domain.MatchingModel
-import com.pob.umpa.domain.MockLessonDetailData.mockAccompanimentLessonDetailData
 import com.pob.umpa.domain.MockLessonDetailData.mockComposingLessonDetailData
-import com.pob.umpa.domain.MockLessonDetailData.mockMrProductionLessonDetailData
-import com.pob.umpa.domain.MockLessonDetailData.mockScoreProductionLessonDetailData
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.view.main.matching.detail.component.Render
 import com.pob.umpa.util.toCommaString
 
 @Composable
 fun MatchingDetailScreen(
-    lessonId: String,
     modifier: Modifier = Modifier,
+    lessonId: String,
+    mockData: MatchingDetailModel = mockComposingLessonDetailData,
 ) {
-    val mockDataList = listOf<MatchingDetailModel>(
-        mockComposingLessonDetailData,
-        mockScoreProductionLessonDetailData,
-        mockAccompanimentLessonDetailData,
-        mockMrProductionLessonDetailData,
-    )
-    val mockData = mockDataList.random()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     MatchingDetailLayout(
@@ -468,6 +462,19 @@ fun CustomTabMenu(
                 .width(with(density) { tabWidths[selectedTabIndex].toDp() })
                 .height(3.dp)
                 .background(UmpaColor.Main)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun MatchingDetailScreenPreview(
+    @PreviewParameter(MatchingDetailPreviewParameterProvider::class) mockData: MatchingDetailModel
+) {
+    UmpaTheme {
+        MatchingDetailScreen(
+            lessonId = "1",
+            mockData = mockData,
         )
     }
 }
