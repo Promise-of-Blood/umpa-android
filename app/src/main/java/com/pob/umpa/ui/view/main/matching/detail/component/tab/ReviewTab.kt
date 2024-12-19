@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.pob.umpa.domain.ReviewItem
@@ -52,6 +53,7 @@ import com.pob.umpa.domain.ReviewTabItem
 import com.pob.umpa.domain.SuccessStoryItem
 import com.pob.umpa.ui.theme.Typography
 import com.pob.umpa.ui.theme.UmpaColor
+import com.pob.umpa.ui.theme.UmpaTheme
 import com.pob.umpa.ui.view.main.matching.detail.component.lightGrayBorder
 import java.time.format.DateTimeFormatter
 import kotlin.math.ceil
@@ -80,14 +82,22 @@ fun ReviewTab(
         when (selectedTabIndex) {
             0 -> {
                 item { ReviewHeader(rating = 4.5f, reviewCount = data.reviewList.size) }
-                items(data.reviewList) { review ->
-                    ReviewItem(review = review)
+                if (data.reviewList.isEmpty()) {
+                    item { EmptyState(text = "아직 작성된 리뷰가 없어요.") }
+                } else {
+                    items(data.reviewList) { review ->
+                        ReviewItem(review = review)
+                    }
                 }
             }
 
             else -> {
-                items(data.successStoryList) { successStory ->
-                    SuccessStoryItem(successStory = successStory)
+                if (data.reviewList.isEmpty()) {
+                    item { EmptyState(text = "아직 작성된 합격 후기가 없어요.") }
+                } else {
+                    items(data.successStoryList) { successStory ->
+                        SuccessStoryItem(successStory = successStory)
+                    }
                 }
             }
         }
@@ -379,3 +389,33 @@ private fun StarRatingBar(
     }
 }
 
+@Composable
+fun EmptyState(modifier: Modifier = Modifier, text: String) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(vertical = 52.dp),
+    ) {
+        Text(
+            text = text,
+            style = Typography.labelSmall,
+            fontWeight = FontWeight.Normal,
+            color = UmpaColor.Grey,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewTabPreview() {
+    UmpaTheme {
+        ReviewTab(
+            data = ReviewTabItem(
+                reviewList = listOf(),
+                successStoryList = listOf(),
+            )
+        )
+    }
+}
