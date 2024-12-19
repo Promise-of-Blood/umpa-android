@@ -1,6 +1,7 @@
-package com.pob.umpa.ui.view.main.community.Mentoring
+package com.pob.umpa.ui.view.main.community.mentoring
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.pob.umpa.R
 
 class ArticleThumbnail(
@@ -27,7 +30,9 @@ class ArticleThumbnail(
 )
 
 @Composable
-fun MentoringScreen() {
+fun MentoringScreen(
+    navController: NavController
+) {
     val articleList = listOf(
         ArticleThumbnail(R.drawable.hingkku, "제목 입력 제목 입력 제목 입력 제목 입력"),
         ArticleThumbnail(R.drawable.hingkku, "제목 입력 제목 입력 제목 입력 제목 입력"),
@@ -47,21 +52,23 @@ fun MentoringScreen() {
     )
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // 2개의 열
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp), // 그리드의 외부 여백
+        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp), // 그리드의 외부 여백
         verticalArrangement = Arrangement.spacedBy(8.dp), // 아이템 간 수직 간격
         horizontalArrangement = Arrangement.spacedBy(8.dp) // 아이템 간 가로 간격
     ) {
         items(articleList) { article ->
-            ArticleThumbnail(article)
+            ArticleThumbnail(article = article,
+                modifier = Modifier.clickable { navController.navigate("mentoring/${article.title}") })
         }
     }
 }
 
 
 @Composable
-fun ArticleThumbnail(article: ArticleThumbnail) {
-    Column {
+fun ArticleThumbnail(modifier: Modifier = Modifier, article: ArticleThumbnail) {
+    Column(
+        modifier = modifier
+    ) {
         Image(
             painter = painterResource(id = article.image),
             contentDescription = null,
@@ -79,5 +86,5 @@ fun ArticleThumbnail(article: ArticleThumbnail) {
 @Preview(showBackground = true)
 @Composable
 fun MentoringScreenPreview() {
-    MentoringScreen()
+    MentoringScreen(NavController(LocalContext.current))
 }
